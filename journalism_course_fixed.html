@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>The Journalism Academy — Professional Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#0f0e0d;--paper:#faf8f4;--cream:#f2ede4;--rule:#d4cfc4;
+  --accent:#c0392b;--accent2:#1a5276;--gold:#b7860b;
+  --text:#2c2a27;--muted:#7a7570;--green:#1a6b3a;--sidebar:270px;
+  --purple:#534ab7;--teal:#0f6e56;--rose:#993556;
+}
+html,body{height:100%;font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--text);font-size:15px;line-height:1.65;}
+/* LAYOUT */
+.shell{display:flex;min-height:100vh;}
+.sidebar{width:var(--sidebar);background:var(--ink);color:#e8e4dc;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;}
+.main{margin-left:var(--sidebar);flex:1;}
+/* SIDEBAR */
+.sb-brand{padding:24px 22px 18px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.sb-brand .eyebrow{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+.sb-brand h2{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#faf8f4;line-height:1.3;}
+.sb-brand p{font-size:10px;color:rgba(255,255,255,0.3);margin-top:3px;}
+.sb-prog{padding:14px 22px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.prog-lbl{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:7px;display:flex;justify-content:space-between;}
+.prog-wrap{background:rgba(255,255,255,0.08);border-radius:2px;height:2px;}
+.prog-fill{height:100%;background:var(--accent);width:0%;transition:width 0.4s;border-radius:2px;}
+.prog-txt{font-size:10px;color:rgba(255,255,255,0.35);margin-top:5px;}
+.sb-sec{font-size:8.5px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.2);padding:14px 22px 5px;font-weight:600;}
+.nav-i{display:flex;align-items:center;gap:8px;padding:8px 22px;cursor:pointer;border-left:2px solid transparent;transition:background 0.12s;}
+.nav-i:hover{background:rgba(255,255,255,0.04);}
+.nav-i.active{background:rgba(192,57,43,0.1);border-left-color:var(--accent);}
+.nav-i .nn{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,0.2);width:18px;flex-shrink:0;}
+.nav-i .nt{font-size:11px;color:rgba(255,255,255,0.58);flex:1;line-height:1.3;}
+.nav-i.active .nt{color:#faf8f4;}
+.nav-i .ck{width:12px;height:12px;border-radius:50%;border:1px solid rgba(255,255,255,0.12);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.nav-i .ck.done{background:var(--green);border-color:var(--green);}
+.nav-i .ck.done::after{content:'✓';font-size:7px;color:#fff;}
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 40px;border-bottom:1px solid var(--rule);background:var(--paper);position:sticky;top:0;z-index:50;}
+.tb-left{font-size:11px;color:var(--muted);}
+.tb-left strong{color:var(--text);font-weight:500;}
+.tb-right{display:flex;gap:8px;align-items:center;}
+.btn{font-size:12px;padding:7px 16px;border-radius:2px;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;transition:all 0.15s;border:1px solid var(--rule);background:transparent;color:var(--muted);}
+.btn:hover:not(:disabled){border-color:var(--text);color:var(--text);}
+.btn:disabled{opacity:0.3;cursor:not-allowed;}
+.btn.pri{background:var(--accent);color:#fff;border-color:var(--accent);}
+.btn.pri:hover{background:#a93226;}
+/* LESSON */
+.lw{max-width:800px;margin:0 auto;padding:48px 40px 100px;}
+.l-meta{display:flex;gap:10px;align-items:center;margin-bottom:24px;flex-wrap:wrap;}
+.l-tag{font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:3px 9px;border-radius:1px;}
+.tag-f{background:#faeeda;color:#854f0b;}
+.tag-r{background:#e6f1fb;color:#185fa5;}
+.tag-e{background:#eaf3de;color:#3b6d11;}
+.tag-b{background:#fbeaf0;color:#993556;}
+.tag-d{background:#eeedfe;color:#534ab7;}
+.tag-eth{background:#f1efe8;color:#444;}
+.tag-res{background:#e1f5ee;color:#0f6e56;}
+.tag-inv{background:#fdf3dc;color:#7a4b00;}
+.tag-pub{background:#f0e8fe;color:#5b21b6;}
+.tag-data{background:#e0f2fe;color:#075985;}
+.tag-photo{background:#fce7f3;color:#9d174d;}
+.tag-pr{background:#ecfdf5;color:#065f46;}
+.l-num{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);}
+.l-dur{font-size:10px;color:var(--muted);margin-left:auto;background:var(--cream);padding:3px 8px;border-radius:2px;}
+.l-title{font-family:'Playfair Display',serif;font-size:34px;font-weight:900;line-height:1.15;color:var(--ink);margin-bottom:10px;}
+.l-sub{font-size:15px;color:var(--muted);font-weight:300;margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--rule);}
+/* BODY */
+.lb h2{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:var(--ink);margin:34px 0 13px;}
+.lb h3{font-size:14px;font-weight:600;color:var(--ink);margin:22px 0 9px;text-transform:uppercase;letter-spacing:0.04em;}
+.lb p{margin-bottom:15px;line-height:1.78;}
+.lb ul,.lb ol{margin:0 0 15px 20px;line-height:1.78;}
+.lb li{margin-bottom:5px;}
+.lb strong{font-weight:600;color:var(--ink);}
+.lb em{font-style:italic;color:var(--muted);}
+.lb table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px;}
+.lb th{background:var(--ink);color:#faf8f4;padding:10px 14px;text-align:left;font-weight:500;font-size:11px;letter-spacing:0.04em;}
+.lb td{padding:10px 14px;border-bottom:1px solid var(--rule);vertical-align:top;}
+.lb tr:nth-child(even) td{background:var(--cream);}
+/* CALLOUTS */
+.co{padding:16px 20px;margin:22px 0;border-radius:2px;}
+.co-rule{border-left:3px solid var(--accent);background:#fdf6f5;}
+.co-tip{border-left:3px solid var(--gold);background:#fdfaf0;}
+.co-ex{border-left:3px solid var(--accent2);background:#f0f5fc;}
+.co-warn{border-left:3px solid #888;background:#f5f5f4;}
+.co-green{border-left:3px solid var(--green);background:#f0faf4;}
+.co-purple{border-left:3px solid var(--purple);background:#f5f4fe;}
+.co-lbl{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.co p{margin:0;font-size:13px;line-height:1.72;}
+/* QUOTE */
+.lq{border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);margin:32px 0;padding:22px 0;}
+.lq blockquote{font-family:'Playfair Display',serif;font-size:19px;font-style:italic;line-height:1.55;color:var(--ink);margin-bottom:9px;}
+.lq cite{font-size:11px;color:var(--muted);letter-spacing:0.05em;}
+/* KEY TERMS */
+.kt{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0;}
+.kc{background:#fff;border:1px solid var(--rule);padding:13px 15px;border-radius:2px;}
+.kc .k{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;color:var(--accent2);margin-bottom:4px;}
+.kc .d{font-size:12px;color:var(--muted);line-height:1.5;}
+/* EXERCISE */
+.exb{background:var(--ink);color:#e8e4dc;padding:26px 30px;margin:32px 0;border-radius:2px;}
+.exb .eh{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;}
+.exb .ei{font-size:20px;flex-shrink:0;margin-top:2px;}
+.exb .et{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#faf8f4;}
+.exb .ety{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:3px;}
+.exb p{font-size:13px;color:rgba(255,255,255,0.68);line-height:1.72;margin-bottom:11px;}
+.exb ol,.exb ul{margin-left:17px;font-size:13px;color:rgba(255,255,255,0.68);line-height:1.72;}
+.exb li{margin-bottom:5px;}
+.exb .es{margin-top:16px;display:flex;gap:8px;align-items:flex-end;}
+.exb textarea{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:2px;padding:9px 12px;color:#e8e4dc;font-family:'IBM Plex Sans',sans-serif;font-size:12px;outline:none;resize:vertical;min-height:65px;}
+.exb textarea:focus{border-color:rgba(255,255,255,0.25);}
+.exb .es button{background:var(--accent);color:#fff;border:none;padding:9px 16px;border-radius:2px;font-size:11px;cursor:pointer;font-weight:500;white-space:nowrap;}
+.sn{font-size:11px;color:#4ade80;margin-top:5px;display:none;}
+/* RUBRIC */
+.rubric{background:var(--cream);border:1px solid var(--rule);border-radius:2px;margin:16px 0;overflow:hidden;}
+.rubric-head{background:rgba(0,0,0,0.04);padding:10px 16px;font-size:11px;font-weight:600;color:var(--ink);letter-spacing:0.04em;text-transform:uppercase;}
+.rubric table{margin:0;font-size:12px;}
+.rubric th{background:rgba(0,0,0,0.06);font-size:10px;}
+.rubric td{padding:8px 12px;}
+/* QUIZ */
+.qb{background:var(--cream);border:1px solid var(--rule);padding:26px 30px;margin:32px 0;border-radius:2px;}
+.qb-head h3{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.qb-head p{font-size:12px;color:var(--muted);margin-bottom:18px;}
+.qq{margin-bottom:18px;}
+.qq .qt{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:9px;line-height:1.5;}
+.opts{display:flex;flex-direction:column;gap:5px;}
+.opt{display:flex;align-items:flex-start;gap:9px;padding:9px 13px;border:1px solid var(--rule);border-radius:2px;cursor:pointer;background:#fff;transition:all 0.12s;font-size:12px;color:var(--text);}
+.opt:hover{border-color:var(--accent2);background:#f0f5fc;}
+.opt.sel{border-color:var(--accent2);background:#e6f1fb;}
+.opt.cor{border-color:var(--green)!important;background:#eaf3de!important;color:var(--green);}
+.opt.wrg{border-color:var(--accent)!important;background:#fdf6f5!important;color:var(--accent);}
+.opt .ol{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);flex-shrink:0;margin-top:1px;}
+.qs-btn{margin-top:14px;background:var(--accent2);color:#fff;border:none;padding:9px 22px;border-radius:2px;font-size:12px;cursor:pointer;font-weight:500;}
+.qr{margin-top:12px;padding:11px 15px;border-radius:2px;font-size:12px;display:none;}
+.qr.show{display:block;}
+.qr.pass{background:#eaf3de;color:var(--green);}
+.qr.fail{background:#fdf6f5;color:var(--accent);}
+/* CHECKLIST */
+.cl{list-style:none;margin:0 0 18px;}
+.cl li{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid var(--rule);font-size:13px;cursor:pointer;user-select:none;}
+.cl li:last-child{border-bottom:none;}
+.cl .cb{width:15px;height:15px;border:1px solid var(--rule);border-radius:2px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.cl li.ck .cb{background:var(--green);border-color:var(--green);}
+.cl li.ck .cb::after{content:'✓';font-size:8px;color:#fff;}
+.cl li.ck span{color:var(--muted);text-decoration:line-through;}
+/* FOOTER */
+.lf{border-top:1px solid var(--rule);padding-top:28px;margin-top:44px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.md-btn{background:var(--green);color:#fff;border:none;padding:11px 26px;border-radius:2px;font-size:13px;cursor:pointer;font-weight:500;transition:background 0.15s;}
+.md-btn:hover{background:#145c30;}
+.md-btn.done{background:#888;cursor:default;}
+/* HOME */
+.hero{background:var(--ink);color:#faf8f4;padding:64px 40px;text-align:center;}
+.hero .ey{font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:54px;font-weight:900;line-height:1.08;margin-bottom:14px;}
+.hero p{font-size:15px;color:rgba(255,255,255,0.5);max-width:540px;margin:0 auto 26px;line-height:1.72;}
+.hero .hbtn{background:var(--accent);color:#fff;border:none;padding:14px 36px;border-radius:2px;font-size:14px;cursor:pointer;font-weight:500;}
+.stats-bar{display:flex;justify-content:center;gap:40px;padding:28px 40px;border-bottom:1px solid var(--rule);background:#fff;}
+.stat{text-align:center;}
+.stat .sv{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--ink);}
+.stat .sl{font-size:11px;color:var(--muted);margin-top:2px;}
+.mg{padding:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.mc{background:#fff;border:1px solid var(--rule);border-radius:2px;overflow:hidden;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;}
+.mc:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.07);}
+.mct{height:4px;}
+.mcb{padding:18px;}
+.mc .mn{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:7px;}
+.mc h3{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:7px;}
+.mc p{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:12px;}
+.mc .ml{font-size:10px;color:var(--muted);}
+.mc .ml span{color:var(--accent2);font-weight:600;}
+.page{display:none;}.page.active{display:block;}
+.lb{animation:fu 0.22s ease;}
+@keyframes fu{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.diff-badge{display:inline-block;font-size:9px;font-weight:600;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle;}
+.diff-beg{background:#eaf3de;color:#1a6b3a;}
+.diff-int{background:#faeeda;color:#854f0b;}
+.diff-adv{background:#fdf6f5;color:#c0392b;}
+.section-divider{border:none;border-top:1px solid var(--rule);margin:28px 0;}
+@media(max-width:900px){.mg{grid-template-columns:1fr 1fr;}.kt{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="shell">
+<nav class="sidebar">
+  <div class="sb-brand">
+    <div class="eyebrow">The Journalism Academy</div>
+    <h2>Professional Course</h2>
+    <p>Journalism Course for Aspiring Professionals</p>
+  </div>
+  <div class="sb-prog">
+    <div class="prog-lbl"><span>Progress</span><span id="pct-txt">0%</span></div>
+    <div class="prog-wrap"><div class="prog-fill" id="pbar"></div></div>
+    <div class="prog-txt" id="ptext">0 of 20 lessons complete</div>
+  </div>
+
+  <div class="sb-sec">Start Here</div>
+  <div class="nav-i active" onclick="goPage('home')" id="nav-home"><span class="nn">—</span><span class="nt">Course Overview</span><span class="ck" id="chk-home"></span></div>
+
+  <div class="sb-sec">Module 1 — Foundations</div>
+  <div class="nav-i" onclick="goL(1)" id="nav-1"><span class="nn">01</span><span class="nt">What is Journalism?</span><span class="ck" id="chk-1"></span></div>
+  <div class="nav-i" onclick="goL(2)" id="nav-2"><span class="nn">02</span><span class="nt">History of Communication</span><span class="ck" id="chk-2"></span></div>
+
+  <div class="sb-sec">Module 2 — Reporting</div>
+  <div class="nav-i" onclick="goL(3)" id="nav-3"><span class="nn">03</span><span class="nt">News Values & Sources</span><span class="ck" id="chk-3"></span></div>
+  <div class="nav-i" onclick="goL(4)" id="nav-4"><span class="nn">04</span><span class="nt">Writing the News Story</span><span class="ck" id="chk-4"></span></div>
+  <div class="nav-i" onclick="goL(5)" id="nav-5"><span class="nn">05</span><span class="nt">Specialized Beat Reporting</span><span class="ck" id="chk-5"></span></div>
+
+  <div class="sb-sec">Module 3 — Editing</div>
+  <div class="nav-i" onclick="goL(6)" id="nav-6"><span class="nn">06</span><span class="nt">News Editing Principles</span><span class="ck" id="chk-6"></span></div>
+  <div class="nav-i" onclick="goL(7)" id="nav-7"><span class="nn">07</span><span class="nt">Headlines & Advanced Writing</span><span class="ck" id="chk-7"></span></div>
+
+  <div class="sb-sec">Module 4 — Broadcast</div>
+  <div class="nav-i" onclick="goL(8)" id="nav-8"><span class="nn">08</span><span class="nt">Radio Journalism</span><span class="ck" id="chk-8"></span></div>
+  <div class="nav-i" onclick="goL(9)" id="nav-9"><span class="nn">09</span><span class="nt">Television Journalism</span><span class="ck" id="chk-9"></span></div>
+
+  <div class="sb-sec">Module 5 — Digital & Social</div>
+  <div class="nav-i" onclick="goL(10)" id="nav-10"><span class="nn">10</span><span class="nt">Social Media Journalism</span><span class="ck" id="chk-10"></span></div>
+  <div class="nav-i" onclick="goL(11)" id="nav-11"><span class="nn">11</span><span class="nt">Data Journalism</span><span class="ck" id="chk-11"></span></div>
+
+  <div class="sb-sec">Module 6 — Investigative</div>
+  <div class="nav-i" onclick="goL(12)" id="nav-12"><span class="nn">12</span><span class="nt">Investigative Journalism</span><span class="ck" id="chk-12"></span></div>
+  <div class="nav-i" onclick="goL(13)" id="nav-13"><span class="nn">13</span><span class="nt">RTI & Document Journalism</span><span class="ck" id="chk-13"></span></div>
+
+  <div class="sb-sec">Module 7 — Visual & Photo</div>
+  <div class="nav-i" onclick="goL(14)" id="nav-14"><span class="nn">14</span><span class="nt">Photojournalism</span><span class="ck" id="chk-14"></span></div>
+  <div class="nav-i" onclick="goL(15)" id="nav-15"><span class="nn">15</span><span class="nt">Multimedia Storytelling</span><span class="ck" id="chk-15"></span></div>
+
+  <div class="sb-sec">Module 8 — Ethics & Law</div>
+  <div class="nav-i" onclick="goL(16)" id="nav-16"><span class="nn">16</span><span class="nt">Media Ethics & Dilemmas</span><span class="ck" id="chk-16"></span></div>
+  <div class="nav-i" onclick="goL(17)" id="nav-17"><span class="nn">17</span><span class="nt">Indian Media Law</span><span class="ck" id="chk-17"></span></div>
+
+  <div class="sb-sec">Module 9 — Industry</div>
+  <div class="nav-i" onclick="goL(18)" id="nav-18"><span class="nn">18</span><span class="nt">PR, Advertising & Media Biz</span><span class="ck" id="chk-18"></span></div>
+  <div class="nav-i" onclick="goL(19)" id="nav-19"><span class="nn">19</span><span class="nt">Entrepreneurial Journalism</span><span class="ck" id="chk-19"></span></div>
+
+  <div class="sb-sec">Module 10 — Research</div>
+  <div class="nav-i" onclick="goL(20)" id="nav-20"><span class="nn">20</span><span class="nt">Communication Research</span><span class="ck" id="chk-20"></span></div>
+</nav>
+
+<div class="main">
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="ey">Professional Course</div>
+    <h1>The Journalism<br/>Academy</h1>
+    <p>20 professional-grade lessons across 10 modules. Reporting, editing, broadcast, investigative, data, photo, ethics, law, and research.</p>
+    <button class="hbtn" onclick="goL(1)">Begin Course →</button>
+  </div>
+  <div class="stats-bar">
+    <div class="stat"><div class="sv">10</div><div class="sl">Modules</div></div>
+    <div class="stat"><div class="sv">20</div><div class="sl">Lessons</div></div>
+    <div class="stat"><div class="sv">40+</div><div class="sl">Exercises</div></div>
+    <div class="stat"><div class="sv">80+</div><div class="sl">Quiz Questions</div></div>
+    <div class="stat"><div class="sv">∞</div><div class="sl">Professional Value</div></div>
+  </div>
+  <div class="mg">
+    <div class="mc" onclick="goL(1)"><div class="mct" style="background:#c0392b;"></div><div class="mcb"><div class="mn">Module 1</div><h3>Foundations</h3><p>What journalism is, why it matters, and how communication evolved from scripts to smartphones.</p><div class="ml"><span>2</span> lessons</div></div></div>
+    <div class="mc" onclick="goL(3)"><div class="mct" style="background:#1a5276;"></div><div class="mcb"><div class="mn">Module 2</div><h3>Reporting</h3><p>News values, source cultivation, the inverted pyramid, beat reporting, and field skills.</p><div class="ml"><span>3</span> lessons</div></div></div>
+    <div class="mc" onclick="goL(6)"><div class="mct" style="background:#1a6b3a;"></div><div class="mcb"><div class="mn">Module 3</div><h3>Editing</h3><p>Copy editing, CARE framework, headline writing, features, columns, and editorial craft.</p><div class="ml"><span>2</span> lessons</div></div></div>
+    <div class="mc" onclick="goL(8)"><div class="mct" style="background:#993556;"></div><div class="mcb"><div class="mn">Module 4</div><h3>Broadcast</h3><p>Radio packages, TV news production, visual grammar, MOJO, and scripting for air.</p><div class="ml"><span>2</span> lessons</div></div></div>
+    <div class="mc" onclick="goL(10)"><div class="mct" style="background:#534ab7;"></div><div class="mcb"><div class="mn">Module 5</div><h3>Digital & Social</h3><p>Social media journalism, SIFT verification, data journalism, and tools of the digital newsroom.</p><div class="ml"><span>2</span> lessons</div></div></div>
+    <div class="mc" onclick="goL(12)"><div class="mct" style="background:#b7860b;"></div><div class="mcb"><div class="mn">Module 6</div><h3>Investigative</h3><p>Long-form investigation, RTI strategy, document analysis, source protection, and publication.</p><div class="ml"><span>2</span> lessons</div></div></div>
+    <div class="mc" onclick="goL(14)"><div class="mct" style="background:#9d174d;"></div><div class="mcb"><div class="mn">Module 7</div><h3>Visual & Photo</h3><p>Photojournalism ethics, visual storytelling, multimedia packages, and photo-caption craft.</p><div class="ml"><span>2</span> lessons</div></div></div>
+    <div class="mc" onclick="goL(16)"><div class="mct" style="background:#444;"></div><div class="mcb"><div class="mn">Module 8</div><h3>Ethics & Law</h3><p>Ethical frameworks, hard dilemmas, defamation, contempt, RTI, IT Act, and press freedom.</p><div class="ml"><span>2</span> lessons</div></div></div>
+    <div class="mc" onclick="goL(18)"><div class="mct" style="background:#065f46;"></div><div class="mcb"><div class="mn">Module 9</div><h3>Industry</h3><p>PR, advertising, media business models, entrepreneurial journalism, and career strategy.</p><div class="ml"><span>2</span> lessons</div></div></div>
+    <div class="mc" onclick="goL(20)"><div class="mct" style="background:#0f6e56;"></div><div class="mcb"><div class="mn">Module 10</div><h3>Research</h3><p>Research methods, theories, dissertation strategy, content analysis, and academic writing.</p><div class="ml"><span>1</span> lesson</div></div></div>
+  </div>
+  <div id="comp-area"></div>
+</div>
+
+<!-- LESSON PAGE -->
+<div class="page" id="page-lesson">
+  <div class="topbar">
+    <div class="tb-left" id="tb-loc">—</div>
+    <div class="tb-right">
+      <button class="btn" onclick="prevL()" id="btn-prev">← Prev</button>
+      <button class="btn pri" onclick="nextL()" id="btn-next">Next →</button>
+    </div>
+  </div>
+  <div class="lw" id="lcontent"></div>
+</div>
+</div>
+</div>
+<script>
+const TOTAL=20;
+let cur=0;
+const done=new Set();
+const sels={};
+const exdata={};
+const mmap={1:'1',2:'1',3:'2',4:'2',5:'2',6:'3',7:'3',8:'4',9:'4',10:'5',11:'5',12:'6',13:'6',14:'7',15:'7',16:'8',17:'8',18:'9',19:'9',20:'10'};
+
+// ─── LESSON DATA ─────────────────────────────────────────────────────────────
+const L={
+1:{tag:'tag-f',tl:'Foundation',num:'Lesson 01',dur:'30 min',diff:'Beginner',
+title:'What is Journalism?',
+sub:'Defining the craft, understanding its social contract, and distinguishing journalism from every form of communication that merely resembles it.',
+body:`
+<h2>The Social Contract of Journalism</h2>
+<p>Journalism is the only commercially owned institution whose primary social purpose is to serve people <em>other than</em> its owners. A bakery exists to serve its owner's profit. A government agency serves the state. But a newspaper — by its own declared purpose — exists to serve the public. This paradox sits at the heart of every tension in the profession: the conflict between commercial survival and public service.</p>
+<p>Understanding this social contract is not philosophical indulgence. It is the practical foundation on which every editorial decision rests. When you know <strong>why</strong> journalism exists, you know how to act when you're not sure what to do.</p>
+<div class="lq"><blockquote>"Journalism is the first draft of history. But drafts can be wrong — which is why the discipline of verification exists."</blockquote><cite>— Philip Graham, Washington Post publisher, adapted</cite></div>
+<h2>The Nine Elements — Kovach & Rosenstiel</h2>
+<p>Bill Kovach and Tom Rosenstiel spent three years interviewing journalists across the United States and distilled their findings into nine core obligations of journalism. These remain the most authoritative framework for understanding what journalism is and must be.</p>
+<div class="kt">
+<div class="kc"><div class="k">1. Truth</div><div class="d">Journalism's first obligation. Not absolute truth, but a functional, professional truth assembled from verified facts and honest reporting.</div></div>
+<div class="kc"><div class="k">2. Loyalty to Citizens</div><div class="d">Primary allegiance is to the public — not the employer, the advertiser, or the source who gave you the story.</div></div>
+<div class="kc"><div class="k">3. Verification</div><div class="d">The discipline that separates journalism from rumour, PR, and propaganda. Verification is journalism's methodology.</div></div>
+<div class="kc"><div class="k">4. Independence</div><div class="d">Journalists must maintain independence from those they cover — including governments, corporations, and the newsroom's own owners.</div></div>
+<div class="kc"><div class="k">5. Watchdog</div><div class="d">Journalism must serve as an independent monitor of power — all power, including power that owns or funds journalism itself.</div></div>
+<div class="kc"><div class="k">6. Public Forum</div><div class="d">Journalism provides space for public criticism, dialogue, and compromise — giving voice to communities who lack other platforms.</div></div>
+<div class="kc"><div class="k">7. Significance</div><div class="d">Make the significant interesting and relevant. The challenge is not just finding important stories, but making readers care about them.</div></div>
+<div class="kc"><div class="k">8. Proportion</div><div class="d">Keep the news in proportion. Context and scale matter. A story about 3 deaths that feels like 3,000 fails the reader.</div></div>
+<div class="kc"><div class="k">9. Conscience</div><div class="d">Practitioners must be allowed to exercise personal conscience. A journalist ordered to suppress a true story has an obligation to resist.</div></div>
+</div>
+<h2>The Taxonomy of Journalism</h2>
+<table>
+<tr><th>Type</th><th>Primary Medium</th><th>Defining Characteristic</th><th>Indian Examples</th></tr>
+<tr><td><strong>Print</strong></td><td>Newspapers, magazines</td><td>High word count, archival, deep context</td><td>The Hindu, India Today, Frontline</td></tr>
+<tr><td><strong>Broadcast — Radio</strong></td><td>AM/FM, podcast</td><td>Aural; immediate; reaches non-literate audiences</td><td>All India Radio, Radio Mirchi</td></tr>
+<tr><td><strong>Broadcast — TV</strong></td><td>News channels</td><td>Visual-audio; 24/7; highest reach nationally</td><td>NDTV, Sun News, Puthiya Thalaimurai</td></tr>
+<tr><td><strong>Digital</strong></td><td>Online, apps, social</td><td>Multimedia; interactive; instantaneous; measurable</td><td>The Wire, Scroll, The News Minute</td></tr>
+<tr><td><strong>Investigative</strong></td><td>Any medium</td><td>Original documents; long-form; systemic exposure</td><td>The Caravan, Cobrapost, Reporter's Collective</td></tr>
+<tr><td><strong>Citizen</strong></td><td>Smartphones, social</td><td>Non-professional; first-on-scene; unverified</td><td>Local WhatsApp reporters; Twitter eyewitnesses</td></tr>
+<tr><td><strong>Literary / Narrative</strong></td><td>Long-form text</td><td>Fiction techniques applied to true events</td><td>Aman Sethi, Siddharth Deb</td></tr>
+</table>
+<h2>What Journalism Is NOT</h2>
+<div class="co co-rule"><div class="co-lbl">Critical Distinction</div><p><strong>Public Relations</strong> serves the client. <strong>Advertising</strong> promotes products for payment. <strong>Propaganda</strong> promotes ideology. <strong>Entertainment</strong> pleases audiences. Only <strong>Journalism</strong> serves the public interest with verified facts — even when that truth is commercially inconvenient or politically dangerous.</p></div>
+<p>The blurring of these categories — "native advertising," "branded content," "infotainment," "government press releases published verbatim" — is one of the gravest threats to journalism's legitimacy and to the public's ability to navigate reality.</p>
+<h2>Objectivity: The Myth and the Standard</h2>
+<p>Perfect objectivity is impossible. Every editorial decision — which story to cover, which source to quote first, which photograph to use — involves human judgment. But objectivity as an <em>aspiration</em> and a <em>method</em> is essential. The discipline of objectivity means: seeking multiple perspectives, attributing claims to named sources, separating fact from inference, and disclosing relevant conflicts of interest.</p>
+<div class="co co-tip"><div class="co-lbl">Professional Standard</div><p>Experienced journalists distinguish between <strong>objectivity</strong> (a method — seek all sides, attribute all claims) and <strong>false balance</strong> (giving equal weight to unequal evidence). Giving a flat-earth believer the same space as NASA's scientists is not objective journalism — it is misleading journalism dressed as fairness.</p></div>
+<h2>Lesson Checklist</h2>
+<ul class="cl" id="cl-1">
+<li onclick="toggleCk(this)"><span class="cb"></span><span>I can explain journalism's social contract in my own words</span></li>
+<li onclick="toggleCk(this)"><span class="cb"></span><span>I can name all nine elements of journalism (Kovach & Rosenstiel)</span></li>
+<li onclick="toggleCk(this)"><span class="cb"></span><span>I can distinguish all seven types of journalism with examples</span></li>
+<li onclick="toggleCk(this)"><span class="cb"></span><span>I understand the difference between objectivity and false balance</span></li>
+<li onclick="toggleCk(this)"><span class="cb"></span><span>I can clearly explain why journalism is not PR, advertising, or propaganda</span></li>
+</ul>
+<div class="exb">
+<div class="eh"><span class="ei">✍</span><div><div class="et">Exercise 1A — The Classification Audit</div><div class="ety">Critical Analysis · 20 minutes · Beginner</div></div></div>
+<p>Open any major Indian news website. Find and classify 5 different pieces of content into the following categories: <em>Hard News Reporting, Opinion/Column, Advertorial/Native Ad, Infotainment, Investigative Report.</em></p>
+<ol><li>Screenshot or note the URL of each piece</li><li>Write 2 sentences identifying which category it belongs to and the specific clues that reveal this (labeling, writing style, attribution patterns, source types)</li><li>Identify which piece comes closest to the ideal of journalism as defined by Kovach & Rosenstiel, and explain why in 100 words</li></ol>
+<div class="co co-green" style="margin-top:12px;"><div class="co-lbl">Assessment Rubric</div><p>Excellent: All 5 correctly classified with specific textual evidence cited. Good: 4 correct with partial evidence. Developing: 3 or fewer, or classifications without evidence.</p></div>
+<div class="es"><textarea id="ex-1a" placeholder="Paste your classifications and analysis here..."></textarea><button onclick="saveEx('1a')">Save</button></div>
+<div class="sn" id="sn-1a">✓ Saved!</div>
+</div>
+<div class="exb">
+<div class="eh"><span class="ei">🎯</span><div><div class="et">Exercise 1B — The Social Contract Essay</div><div class="ety">Written Analysis · 45 minutes · Intermediate</div></div></div>
+<p>Write a 500-word essay responding to the following scenario:</p>
+<p style="background:rgba(255,255,255,0.07);padding:12px;border-radius:2px;font-style:italic;">"A major Tamil Nadu newspaper's largest advertiser — a real-estate company — is being investigated by the Enforcement Directorate for money laundering. The editor-in-chief tells the crime reporter: 'We cover this, but keep it off the front page and don't call it a scam.' The reporter has documentary evidence of fraud."</p>
+<p>Your essay must: (1) Identify which of Kovach & Rosenstiel's nine elements are being violated and how. (2) Explain what the reporter's ethical and professional obligations are. (3) Propose what the reporter should do — and justify it.</p>
+<div class="es"><textarea id="ex-1b" placeholder="Write your essay here..."></textarea><button onclick="saveEx('1b')">Save</button></div>
+<div class="sn" id="sn-1b">✓ Saved!</div>
+</div>
+<div class="qb">
+<div class="qb-head"><h3>Module Quiz — Foundations of Journalism</h3><p>Select the best answer for each question. Explanations will appear after submission.</p></div>
+<div class="qq" id="q-1-1"><div class="qt">1. A journalist receives a fully paid international trip from a tourism ministry in exchange for writing a travel feature. Which principle is most directly violated?</div><div class="opts">
+<div class="opt" onclick="so(this,'q-1-1','a')"><span class="ol">A</span>Proportion — the story would be out of scale</div>
+<div class="opt" onclick="so(this,'q-1-1','b')"><span class="ol">B</span>Independence — commercial interests compromise editorial judgment</div>
+<div class="opt" onclick="so(this,'q-1-1','c')"><span class="ol">C</span>Verification — the journalist hasn't verified the tourism claim</div>
+<div class="opt" onclick="so(this,'q-1-1','d')"><span class="ol">D</span>Public Forum — communities are not being given a voice</div>
+</div></div>
+<div class="qq" id="q-1-2"><div class="qt">2. What is "false balance" in journalism?</div><div class="opts">
+<div class="opt" onclick="so(this,'q-1-2','a')"><span class="ol">A</span>A story that presents only one side of an issue</div>
+<div class="opt" onclick="so(this,'q-1-2','b')"><span class="ol">B</span>Giving equal weight and space to positions supported by unequal amounts of evidence</div>
+<div class="opt" onclick="so(this,'q-1-2','c')"><span class="ol">C</span>An editor who overrules a reporter's factual story</div>
+<div class="opt" onclick="so(this,'q-1-2','d')"><span class="ol">D</span>Using too many anonymous sources in a single story</div>
+</div></div>
+<div class="qq" id="q-1-3"><div class="qt">3. The Caravan magazine spends 8 months investigating a corporate fraud and publishes a 10,000-word story based on leaked documents, whistleblower interviews, and financial records. This is best described as:</div><div class="opts">
+<div class="opt" onclick="so(this,'q-1-3','a')"><span class="ol">A</span>Citizen journalism</div>
+<div class="opt" onclick="so(this,'q-1-3','b')"><span class="ol">B</span>Literary journalism</div>
+<div class="opt" onclick="so(this,'q-1-3','c')"><span class="ol">C</span>Investigative journalism</div>
+<div class="opt" onclick="so(this,'q-1-3','d')"><span class="ol">D</span>Broadcast journalism</div>
+</div></div>
+<button class="qs-btn" onclick="cq('quiz-1',{'q-1-1':'b','q-1-2':'b','q-1-3':'c'})">Submit Answers</button>
+<div class="qr" id="quiz-1-r"></div>
+</div>`},
+
+2:{tag:'tag-f',tl:'Foundation',num:'Lesson 02',dur:'25 min',diff:'Beginner',
+title:'History of Communication',
+sub:'From Sangam-age oral poetry to satellite television — tracing the technological revolutions that made modern journalism possible.',
+body:`
+<h2>Why History Matters to Journalists</h2>
+<p>Journalists who don't know history are condemned to be surprised by it. Every disruption the modern media industry faces — the collapse of classified advertising revenue, the rise of social media, the crisis of misinformation — has historical precedent. The printing press disrupted scribal culture. Radio disrupted newspapers. Television disrupted radio. Understanding these cycles gives journalists the perspective to navigate rather than panic through the current one.</p>
+<h2>Five Communication Eras</h2>
+<h3>Era 1 — Oral Culture (Prehistoric to ~3200 BCE)</h3>
+<p>Before writing, knowledge was encoded in memory and transmitted through performance. Tamil Sangam literature (300 BCE – 300 CE) produced extraordinary works — the Purananuru, Akananuru, Tolkappiyam — through oral tradition before being written on palm leaves. The <em>Thinai</em> system in Tolkappiyam even theorized a sophisticated framework for how landscape, emotion, and communication were interconnected — perhaps the world's first media theory.</p>
+<div class="co co-purple"><div class="co-lbl">Tamil Media Theory — Tholkappiyam</div><p>The Tholkappiyam's <em>Thinai</em> framework classified human emotional communication by ecological region: mountains (love), forests (patience), seashore (separation). This shows that ancient Tamil thinkers already understood that <strong>context shapes communication</strong> — a foundational principle of modern media studies.</p></div>
+<h3>Era 2 — Manuscript Culture (~3200 BCE – 1450 CE)</h3>
+<p>Writing emerged independently across civilizations. Tamil Brahmi inscriptions from the 3rd century BCE appear across Tamil Nadu, making Tamil one of the world's oldest languages with a continuous written record. Palm leaf manuscripts (olai chuvadi) preserved literary, medical, and administrative knowledge. The production and copying of manuscripts was itself a form of information distribution — slow, expensive, and controlled by elites and religious institutions.</p>
+<h3>Era 3 — Print Culture (1450 – 1900)</h3>
+<p>Gutenberg's movable type press (c. 1450) was the first mass communication technology. It reduced the cost of producing a text by 95%, enabling the first mass literacy and the first mass news market. India's first newspaper was <em>Hicky's Bengal Gazette</em> (1780) — and James Hicky was immediately prosecuted by the colonial government for critical reporting, establishing India's first press freedom battle in the same year as its first newspaper.</p>
+<table>
+<tr><th>Year</th><th>Publication</th><th>Significance</th></tr>
+<tr><td>1780</td><td>Hicky's Bengal Gazette</td><td>India's first newspaper; immediately censored by British</td></tr>
+<tr><td>1831</td><td>Swadesamitran (Tamil)</td><td>One of India's first Tamil language newspapers</td></tr>
+<tr><td>1878</td><td>The Hindu (Madras)</td><td>Founded as a nationalist voice; became India's paper of record</td></tr>
+<tr><td>1881</td><td>Kesari (Marathi) / Tilak</td><td>Press as political weapon; Tilak jailed multiple times</td></tr>
+<tr><td>1933</td><td>Kudi Arasu / Periyar</td><td>Dravidian social reform through journalism</td></tr>
+</table>
+<h3>Era 4 — Electronic Mass Media (1900 – 1990)</h3>
+<p>Radio, cinema, and television transformed journalism from a textual experience into an audiovisual one. All India Radio (AIR), founded in 1936, became the dominant news voice across a diverse, largely illiterate nation. Doordarshan launched television in India in 1959. The Emergency (1975–77), when Indira Gandhi suspended press freedom and censored all news media, remains the defining trauma of Indian journalism's relationship with state power.</p>
+<div class="co co-warn"><div class="co-lbl">The Emergency — India's Darkest Press Hour</div><p>From June 1975 to March 1977, all Indian media was censored. Newspapers were required to submit content for government approval before publishing. Several editors who refused were arrested. The phrase "the press crawled when it was only asked to bend" — attributed to LK Advani — became a permanent indictment of journalistic cowardice. Know this history. It will happen again.</p></div>
+<h3>Era 5 — Digital / Network Culture (1990 – Present)</h3>
+<p>The internet collapsed the distinctions between producer and consumer of news. The 2011 Arab Spring demonstrated that social media could topple governments. In India, WhatsApp has become the primary news source for hundreds of millions — and the primary vector for some of the most dangerous misinformation in the country's history, including mob violence triggered by viral fabrications.</p>
+<div class="exb">
+<div class="eh"><span class="ei">📜</span><div><div class="et">Exercise 2A — Press Freedom Chronology</div><div class="ety">Research + Writing · 60 minutes · Intermediate</div></div></div>
+<p>India's press has faced repeated attempts to silence it. Research and document <strong>5 historical incidents</strong> where Indian journalists faced legal prosecution, physical attack, or censorship for doing their jobs. For each incident, write:</p>
+<ol><li>The journalist's name and publication (1940s to present)</li><li>What they reported that led to the threat or prosecution</li><li>The legal or physical mechanism used against them</li><li>The outcome — and what it tells us about press freedom in India</li></ol>
+<p>Your compiled document should read as a coherent narrative of why press freedom must be actively defended, not assumed. Use sources like the Press Freedom Index, CPJ, and RSF.</p>
+<div class="es"><textarea id="ex-2a" placeholder="Begin your research document here..."></textarea><button onclick="saveEx('2a')">Save</button></div>
+<div class="sn" id="sn-2a">✓ Saved!</div>
+</div>
+<div class="exb">
+<div class="eh"><span class="ei">⚡</span><div><div class="et">Exercise 2B — Disruption Analysis</div><div class="ety">Strategic Thinking · 30 minutes · Advanced</div></div></div>
+<p>Digital media has destroyed the print newspaper's business model. Classified advertising — once 40–60% of newspaper revenue — migrated to platforms like OLX and Quikr. Display advertising followed to Google and Facebook. Consider:</p>
+<ol><li>What new revenue models have Indian digital journalism outlets (The Wire, The News Minute, Newslaundry) developed?</li><li>Which models show the most promise for sustaining independent journalism?</li><li>What historical parallels exist? (How did newspapers survive the arrival of radio?)</li></ol>
+<p>Write a 400-word strategic memo as if advising a mid-size regional Tamil newspaper on how to survive the next decade.</p>
+<div class="es"><textarea id="ex-2b" placeholder="Your strategic memo here..."></textarea><button onclick="saveEx('2b')">Save</button></div>
+<div class="sn" id="sn-2b">✓ Saved!</div>
+</div>
+<div class="qb">
+<div class="qb-head"><h3>History of Communication — Quiz</h3><p>Test your understanding.</p></div>
+<div class="qq" id="q-2-1"><div class="qt">1. During the Indian Emergency (1975–77), what happened to the Indian press?</div><div class="opts">
+<div class="opt" onclick="so(this,'q-2-1','a')"><span class="ol">A</span>A new licensing regime required journalists to pass government exams</div>
+<div class="opt" onclick="so(this,'q-2-1','b')"><span class="ol">B</span>All media was censored and required government approval before publishing</div>
+<div class="opt" onclick="so(this,'q-2-1','c')"><span class="ol">C</span>Foreign newspapers were banned but Indian press was free</div>
+<div class="opt" onclick="so(this,'q-2-1','d')"><span class="ol">D</span>Television was shut down but print was allowed to continue freely</div>
+</div></div>
+<div class="qq" id="q-2-2"><div class="qt">2. The Tholkappiyam's Thinai framework is significant to media studies because it demonstrates that:</div><div class="opts">
+<div class="opt" onclick="so(this,'q-2-2','a')"><span class="ol">A</span>Tamil was the first language to develop a written script</div>
+<div class="opt" onclick="so(this,'q-2-2','b')"><span class="ol">B</span>Ancient Tamil thinkers understood that context shapes the meaning of communication</div>
+<div class="opt" onclick="so(this,'q-2-2','c')"><span class="ol">C</span>Oral culture was inferior to written culture in preserving knowledge</div>
+<div class="opt" onclick="so(this,'q-2-2','d')"><span class="ol">D</span>Sangam poetry was used as a form of political propaganda</div>
+</div></div>
+<button class="qs-btn" onclick="cq('quiz-2',{'q-2-1':'b','q-2-2':'b'})">Submit</button>
+<div class="qr" id="quiz-2-r"></div>
+</div>`},
+
+3:{tag:'tag-r',tl:'Reporting',num:'Lesson 03',dur:'35 min',diff:'Beginner',
+title:'News Values & Sources',
+sub:'What makes something newsworthy, how to find stories before others do, and how to build and protect the sources that make journalism possible.',
+body:`
+<h2>The News Value Matrix</h2>
+<p>News judgment is the most important uncodifiable skill in journalism. You cannot look it up. It develops through reading widely, reporting constantly, and discussing editorial decisions with experienced journalists. But it begins with understanding the criteria that experienced editors apply — often instinctively — to every potential story.</p>
+<div class="kt">
+<div class="kc"><div class="k">Timeliness</div><div class="d">News is new. The more recent the event, the stronger the news value. Breaking news is the extreme form — a story happening right now has maximum timeliness.</div></div>
+<div class="kc"><div class="k">Proximity</div><div class="d">Physical and cultural closeness to the audience amplifies news value. A flood in Thanjavur is bigger news in Tamil Nadu than in Delhi; the reverse is also true.</div></div>
+<div class="kc"><div class="k">Significance / Impact</div><div class="d">How many people does this affect, and how seriously? A new tax affects everyone; a new bus route affects one neighborhood. Scale determines significance.</div></div>
+<div class="kc"><div class="k">Prominence</div><div class="d">The status of the people involved. A Cabinet minister's arrest is front-page news; the same crime by an unknown person may not make the paper at all.</div></div>
+<div class="kc"><div class="k">Conflict</div><div class="d">Disagreement, competition, drama. Courts, elections, protests, battles — all produce conflict. Conflict creates narrative tension that drives readers forward.</div></div>
+<div class="kc"><div class="k">Human Interest</div><div class="d">Emotional connection — joy, outrage, inspiration, heartbreak. Stories of individual humans can carry enormous news value even without political significance.</div></div>
+<div class="kc"><div class="k">Novelty / Oddity</div><div class="d">"Dog bites man" is not news. "Man bites dog" is. The unusual, the unexpected, the first-ever — these have news value precisely because they depart from the normal.</div></div>
+<div class="kc"><div class="k">Currency / Relevance</div><div class="d">Connectivity to topics already dominating public attention. During monsoon season, every flood story has elevated news value. Journalists call this "riding the news cycle."</div></div>
+</div>
+<div class="co co-rule"><div class="co-lbl">The Professional Test</div><p>Strong stories score on 4 or more criteria. The corruption case against a prominent Tamil Nadu minister scores: Proximity (Tamil Nadu audience), Prominence (minister), Conflict (prosecution), Significance (governance affects everyone), and Timeliness (just filed). That story belongs on Page 1. A local school play scores: Proximity and Human Interest. That belongs in the community section — not on the front page, even if the principal is pushing for it.</p></div>
+<h2>Source Architecture: Building Your Network</h2>
+<p>Sources are the infrastructure of journalism. The reporter who has no sources has no reporting — only press releases. Source cultivation is a long-term investment that pays dividends throughout a career. It requires patience, discretion, and genuine respect for the people who trust you with sensitive information.</p>
+<h3>The Source Pyramid</h3>
+<table>
+<tr><th>Level</th><th>Source Type</th><th>Strength</th><th>Limitation</th></tr>
+<tr><td><strong>Primary</strong></td><td>Eyewitnesses, direct participants</td><td>First-hand account; emotional authenticity</td><td>Memory unreliable; may have agenda</td></tr>
+<tr><td><strong>Expert</strong></td><td>Academics, specialists, analysts</td><td>Context, technical accuracy, credibility</td><td>May have funding ties to interested parties</td></tr>
+<tr><td><strong>Official</strong></td><td>Government, corporate spokespersons</td><td>Accountable, quotable, accessible</td><td>Self-serving; rarely reveals damaging truth</td></tr>
+<tr><td><strong>Documentary</strong></td><td>RTI responses, court filings, budgets</td><td>Irrefutable; doesn't spin</td><td>Requires interpretation; may be incomplete</td></tr>
+<tr><td><strong>Community</strong></td><td>Ordinary citizens, local leaders</td><td>Ground truth; underrepresented voices</td><td>May lack broader context or technical knowledge</td></tr>
+<tr><td><strong>Whistleblower</strong></td><td>Insiders with damaging information</td><td>Can expose what no public source will confirm</td><td>Requires extensive verification; source protection risk</td></div></tr>
+</table>
+<h3>Source Confidentiality: The Journalist's Duty</h3>
+<p>A source who speaks on condition of anonymity is placing their career, freedom, or safety in your hands. This is not a transaction — it is a trust relationship. If you burn a source, word travels fast in professional circles. Your reputation for protecting sources is your single most important asset as a journalist. No story is worth trading it.</p>
+<div class="co co-warn"><div class="co-lbl">The Three Attribution Levels</div><p><strong>On the record:</strong> Everything said can be published and attributed by name. Default for all journalism.<br/><strong>On background:</strong> Information can be published, but not attributed by name. ("A senior government official said...")<br/><strong>Off the record:</strong> Nothing can be published in any form. Information is shared to help the journalist understand — not to use. Honor this absolutely, or lose all future sources.</p></div>
+<h2>The TRUMP Test for Source Credibility</h2>
+<ul>
+<li><strong>T — Track Record:</strong> Has this source been reliable before? Do their tips pan out?</li>
+<li><strong>R — Reason to Know:</strong> Does this person actually have access to the information they're claiming to have?</li>
+<li><strong>U — Ulterior Motive:</strong> What does this source gain from this story being published? Who benefits?</li>
+<li><strong>M — Multiple Corroboration:</strong> Can at least one other independent source confirm the core claim?</li>
+<li><strong>P — Proof:</strong> Can they provide any documentary evidence, however partial, to support their claim?</li>
+</ul>
+<div class="exb">
+<div class="eh"><span class="ei">🔍</span><div><div class="et">Exercise 3A — Source Cultivation Plan</div><div class="ety">Professional Planning · 45 minutes · Intermediate</div></div></div>
+<p>You have been assigned to cover the <strong>Education Beat</strong> for a Tamil Nadu regional newspaper. Design your 90-day source cultivation plan:</p>
+<ol><li><strong>Map the beat:</strong> List every category of institution, official, and individual you would need to know (minimum 10 categories)</li><li><strong>Identify 3 key sources</strong> in each category — who specifically would you approach? What is their title/role?</li><li><strong>First contact strategy:</strong> For 5 of your most important targets, write a brief introduction email or script explaining who you are and why you want to meet</li><li><strong>Conflict of interest audit:</strong> For each source category, identify what their institutional interests are and where those interests might conflict with truthful reporting</li></ol>
+<div class="rubric"><div class="rubric-head">Assessment Rubric</div><table><tr><th>Criterion</th><th>Excellent (A)</th><th>Good (B)</th><th>Developing (C)</th></tr><tr><td>Beat mapping</td><td>15+ categories, specific and comprehensive</td><td>10–14 categories, most key areas covered</td><td>Fewer than 10, gaps in key areas</td></tr><tr><td>Source identification</td><td>Named, specific, verifiable individuals</td><td>Mix of named and generic role descriptions</td><td>Mostly generic role descriptions</td></tr><tr><td>Contact strategy</td><td>Professional, specific, credible tone</td><td>Professional but somewhat generic</td><td>Vague or inappropriate tone</td></tr></table></div>
+<div class="es"><textarea id="ex-3a" placeholder="Begin your source cultivation plan here..."></textarea><button onclick="saveEx('3a')">Save</button></div>
+<div class="sn" id="sn-3a">✓ Saved!</div>
+</div>
+<div class="exb">
+<div class="eh"><span class="ei">📊</span><div><div class="et">Exercise 3B — News Value Triage</div><div class="ety">News Judgment · 20 minutes · Beginner</div></div></div>
+<p>Rank the following 8 story pitches for a Tamil Nadu regional newspaper from strongest (1) to weakest (8) news value. For each, briefly justify your ranking by identifying which news value criteria apply.</p>
+<ol>
+<li>A Minister of Transport is caught drunk-driving by police in Chennai at 2am</li>
+<li>A 103-year-old woman in Madurai votes for the first time ever</li>
+<li>A new study shows the Cauvery river's water quality has dropped 30% in 10 years</li>
+<li>A local cricket club wins a district-level tournament</li>
+<li>The state assembly passes a new law allowing private entities to run government schools</li>
+<li>A viral video shows a cow wandering through a government office building</li>
+<li>The Chief Minister meets the Prime Minister in Delhi for routine annual discussions</li>
+<li>A government hospital in Tirunelveli has had no running water for 3 weeks</li>
+</ol>
+<div class="es"><textarea id="ex-3b" placeholder="Paste your ranked list with justifications here..."></textarea><button onclick="saveEx('3b')">Save</button></div>
+<div class="sn" id="sn-3b">✓ Saved!</div>
+</div>
+<div class="qb">
+<div class="qb-head"><h3>News Values & Sources — Quiz</h3></div>
+<div class="qq" id="q-3-1"><div class="qt">1. A government spokesperson gives you information "on background." What does this mean?</div><div class="opts">
+<div class="opt" onclick="so(this,'q-3-1','a')"><span class="ol">A</span>The information cannot be used in any form — it is purely for your understanding</div>
+<div class="opt" onclick="so(this,'q-3-1','b')"><span class="ol">B</span>The information can be published but cannot be attributed by name to this specific person</div>
+<div class="opt" onclick="so(this,'q-3-1','c')"><span class="ol">C</span>You can publish the information and attribute it by name</div>
+<div class="opt" onclick="so(this,'q-3-1','d')"><span class="ol">D</span>The information can only be used in broadcast, not print</div>
+</div></div>
+<div class="qq" id="q-3-2"><div class="qt">2. Which source type is generally considered the most difficult to refute in an investigative story?</div><div class="opts">
+<div class="opt" onclick="so(this,'q-3-2','a')"><span class="ol">A</span>An expert source with decades of experience in the field</div>
+<div class="opt" onclick="so(this,'q-3-2','b')"><span class="ol">B</span>An official government spokesperson</div>
+<div class="opt" onclick="so(this,'q-3-2','c')"><span class="ol">C</span>Documentary evidence (RTI responses, court filings, financial records)</div>
+<div class="opt" onclick="so(this,'q-3-2','d')"><span class="ol">D</span>An eyewitness who was present at the scene</div>
+</div></div>
+<div class="qq" id="q-3-3"><div class="qt">3. The "U" in the TRUMP source credibility test stands for:</div><div class="opts">
+<div class="opt" onclick="so(this,'q-3-3','a')"><span class="ol">A</span>Uniqueness — the source has exclusive information</div>
+<div class="opt" onclick="so(this,'q-3-3','b')"><span class="ol">B</span>Urgency — the source is sharing time-sensitive information</div>
+<div class="opt" onclick="so(this,'q-3-3','c')"><span class="ol">C</span>Ulterior Motive — what does the source gain from this story being published?</div>
+<div class="opt" onclick="so(this,'q-3-3','d')"><span class="ol">D</span>Undisclosed — the source prefers to remain anonymous</div>
+</div></div>
+<button class="qs-btn" onclick="cq('quiz-3',{'q-3-1':'b','q-3-2':'c','q-3-3':'c'})">Submit</button>
+<div class="qr" id="quiz-3-r"></div>
+</div>`},
+
+4:{tag:'tag-r',tl:'Reporting',num:'Lesson 04',dur:'40 min',diff:'Beginner',
+title:'Writing the News Story',
+sub:'The inverted pyramid, all lead types, the Five Ws, language rules, and the full anatomy of a professional news story.',
+body:`
+<h2>Structure as Service</h2>
+<p>The inverted pyramid is not an arbitrary convention. It is a structure designed around a fundamental truth about readers: <strong>most people will not finish reading your story</strong>. Most will read the headline and the first paragraph. Some will read three paragraphs. A small minority will read to the end. The inverted pyramid is structured so that every stopping point delivers a complete, accurate version of the story — abridged, but not false.</p>
+<div class="co co-ex"><div class="co-lbl">The Inverted Pyramid — Three Zones</div><p><strong>Zone 1 — The Lead (Top 20%):</strong> The most essential information. What happened, to whom, where, when, and why it matters. Must stand alone as a complete story summary.<br/><br/><strong>Zone 2 — The Body (Middle 60%):</strong> Supporting details, direct quotes, context, explanation of significance. Built in descending order of importance.<br/><br/><strong>Zone 3 — The Tail (Bottom 20%):</strong> Background, history, secondary information. Written so it can be cut by editors without damaging the story.</p></div>
+<h2>The Six Types of Leads</h2>
+<h3>1. The Summary Lead</h3>
+<p>The workhorse of news journalism. Delivers the core facts in one or two sentences. Must answer as many of the Five Ws as possible without becoming unwieldy.</p>
+<div class="co co-ex"><div class="co-lbl">Professional Example</div><p>"The Madras High Court on Wednesday stayed the Tamil Nadu government's order to close 148 private schools in Chennai, saying the action was 'arbitrary' and violated natural justice principles. The order, issued last month, had left over 45,000 students in uncertainty over their academic year."</p></div>
+<h3>2. The Anecdotal Lead</h3>
+<p>Opens with a specific person, scene, or moment that represents the larger story. Used for features, long-form reporting, and human-interest stories where immediate connection with a real person creates reader investment.</p>
+<div class="co co-ex"><div class="co-lbl">Professional Example</div><p>"At 6am, before the Chennai streets fill with traffic, Rajeswari Murugan is already at the High Court gates — one of 47,000 parents waiting to hear whether their child's school will open tomorrow. She has been coming every day for two weeks."</p></div>
+<h3>3. The Narrative Lead</h3>
+<p>Drops the reader into the middle of an action or scene using present tense and vivid, precise detail. Common in narrative journalism and magazine writing.</p>
+<h3>4. The Question Lead</h3>
+<p>Opens with a question. Use rarely — only when the question is genuinely unanswerable with a simple yes or no, and when the uncertainty is itself the news. Never use a question lead when the answer is obvious.</p>
+<h3>5. The Delayed Identification Lead</h3>
+<p>Used when the person involved is not well-known. Leads with the role or act, not the name. "A Class 12 student in Coimbatore..." rather than naming an obscure person in the first sentence.</p>
+<h3>6. The Stacked-Deck Lead</h3>
+<p>Lists several related facts or figures to establish scale. "Three hospitals. Forty kilometres of roads. Two thousand homes. And a budget of ₹800 crore. Tamil Nadu's flood recovery plan, announced Tuesday..."</p>
+<h2>The Five Ws and H — Professional Application</h2>
+<table>
+<tr><th>Element</th><th>Question</th><th>Journalistic Standard</th></tr>
+<tr><td><strong>Who</strong></td><td>Who did what? Who is affected?</td><td>Use full name, title, and affiliation on first reference. "M. Suresh, Commissioner of the Greater Chennai Corporation..."</td></tr>
+<tr><td><strong>What</strong></td><td>What happened?</td><td>Describe the action with a strong, specific verb. Not "an incident occurred" — "the building collapsed."</td></tr>
+<tr><td><strong>When</strong></td><td>When did it happen?</td><td>Give specific date and time where relevant. "At 3:47am on Tuesday" not "in the early hours recently."</td></tr>
+<tr><td><strong>Where</strong></td><td>Where did it happen?</td><td>Specific location. Not "in Chennai" — "at the Saidapet junction on Mount Road."</td></tr>
+<tr><td><strong>Why</strong></td><td>Why did it happen?</td><td>Distinguish between proximate cause (the immediate trigger) and systemic cause (the underlying conditions).</td></tr>
+<tr><td><strong>How</strong></td><td>How did it happen?</td><td>The mechanism, process, or sequence of events. Often the most revealing element of any story.</td></tr>
+</table>
+<h2>Professional Language Rules</h2>
+<ul>
+<li><strong>Active voice is not optional:</strong> Passive voice hides agency. "12 people were killed" obscures who killed them. "Police killed 12 protesters" is accurate, accountable, and vastly more informative.</li>
+<li><strong>Sentence length:</strong> Hard news sentences: 15–20 words. Features: up to 30 words. Never begin and end consecutive paragraphs with sentences of the same length — vary the rhythm.</li>
+<li><strong>Attribution grammar:</strong> "said" is almost always the correct attribution verb. Not "claimed" (implies doubt), not "admitted" (implies guilt), not "revealed" (implies surprise on your behalf). Use "said."</li>
+<li><strong>Titles and names:</strong> On first reference: full name + title. On second reference: surname only. Never use honorifics ("Mr.," "Mrs.") in news reporting unless your style guide specifies.</li>
+<li><strong>Numbers:</strong> Spell out one through nine; numerals for 10 and above. Round large numbers: not "₹1,27,43,000" — write "over ₹1.27 crore." Never begin a sentence with a numeral.</li>
+<li><strong>Avoid adjectives that do the reader's thinking for them:</strong> "Shocking," "brutal," "wonderful," "tragic." Show the facts; let the reader feel the emotion.</li>
+</ul>
+<div class="co co-rule"><div class="co-lbl">The One Rule Above All Rules</div><p>Write every sentence for the reader who will never read the next one. If someone stops after your lead, have you given them the essential truth? If they stop after three paragraphs, have you given them enough to act on? Good journalism serves readers at every depth of engagement.</p></div>
+<div class="exb">
+<div class="eh"><span class="ei">📝</span><div><div class="et">Exercise 4A — The Six-Lead Challenge</div><div class="ety">Writing Practice · 45 minutes · Intermediate</div></div></div>
+<p>Using the following raw facts, write six different leads — one of each type covered in this lesson. You may use the same facts for all six leads.</p>
+<div style="background:rgba(255,255,255,0.08);padding:14px;border-radius:2px;margin:10px 0;font-size:13px;line-height:1.8;">
+<strong>RAW FACTS:</strong> Date: this Tuesday. Location: Rajiv Gandhi Government General Hospital, Chennai. Event: A fire broke out in the pharmacy storeroom at 11:23am. Duration: fire controlled in 47 minutes. Damage: medicines worth ₹38 lakh destroyed; the storeroom itself gutted; 4 adjacent wards evacuated. Patients: 340 patients evacuated; 3 elderly patients treated for smoke inhalation (now stable); no deaths. Cause: preliminary investigation suggests electrical fault in an air-conditioning unit installed 14 months ago. Hospital spokesperson quote: "Patient safety was our priority throughout." Fire department quote: "We received the call at 11:31am and had the first unit on site at 11:39am." Opposition MLA quote: "This is the third electrical fire at a government hospital this year. People are dying because this government cannot maintain its own buildings."
+</div>
+<ol><li>Write a <strong>Summary Lead</strong> (max 45 words)</li><li>Write an <strong>Anecdotal Lead</strong> (create a patient being evacuated)</li><li>Write a <strong>Narrative Lead</strong> (present tense, drop reader into the scene)</li><li>Write a <strong>Question Lead</strong> (only if you can justify why a question is warranted here)</li><li>Write a <strong>Delayed Identification Lead</strong> (focusing on the event, not a named official)</li><li>Write a <strong>Stacked-Deck Lead</strong> (using numbers to establish scale)</li></ol>
+<p>After writing all six, identify which lead you would actually use for: (a) a breaking news bulletin, (b) a next-day news analysis, (c) a Sunday magazine feature.</p>
+<div class="es"><textarea id="ex-4a" placeholder="Write all six leads here, clearly numbered..."></textarea><button onclick="saveEx('4a')">Save</button></div>
+<div class="sn" id="sn-4a">✓ Saved!</div>
+</div>
+<div class="exb">
+<div class="eh"><span class="ei">⏱</span><div><div class="et">Exercise 4B — Deadline Reporting Drill</div><div class="ety">Live Reporting · 90 minutes · Advanced</div></div></div>
+<p>This is a timed, deadline exercise. You will have exactly 90 minutes from when you begin.</p>
+<ol><li><strong>Minutes 0–20:</strong> Attend a live event (class, campus meeting, public event nearby). Take only handwritten notes. Collect at least 2 direct quotes from 2 different people. Gather all Five Ws.</li><li><strong>Minutes 20–75:</strong> Write a complete 450-word news story in inverted pyramid format. Include: a summary lead, minimum 2 attributed direct quotes, a nut graf (paragraph explaining why this matters), supporting facts, and 2 sentences of background.</li><li><strong>Minutes 75–90:</strong> Read aloud once. Cut to 380 words by eliminating only the least essential content. Submit.</li></ol>
+<p>Peer review criteria: Does the lead deliver the story? Are quotes natural, not forced? Is every fact attributed? Is the story complete at 200 words if you stopped there?</p>
+</div>
+<div class="qb">
+<div class="qb-head"><h3>News Writing — Quiz</h3></div>
+<div class="qq" id="q-4-1"><div class="qt">1. A story says: "The Minister of Health claimed that the new hospital would be ready by December." The word "claimed" here is problematic because:</div><div class="opts">
+<div class="opt" onclick="so(this,'q-4-1','a')"><span class="ol">A</span>It uses passive voice unnecessarily</div>
+<div class="opt" onclick="so(this,'q-4-1','b')"><span class="ol">B</span>It implies the journalist doubts the statement is true — a value judgment that should be explicit and documented</div>
+<div class="opt" onclick="so(this,'q-4-1','c')"><span class="ol">C</span>It is grammatically incorrect in journalistic style</div>
+<div class="opt" onclick="so(this,'q-4-1','d')"><span class="ol">D</span>Ministers should always be quoted with "stated" not "claimed"</div>
+</div></div>
+<div class="qq" id="q-4-2"><div class="qt">2. What is the "nut graf" in a news story?</div><div class="opts">
+<div class="opt" onclick="so(this,'q-4-2','a')"><span class="ol">A</span>The first paragraph of the story, containing the main news</div>
+<div class="opt" onclick="so(this,'q-4-2','b')"><span class="ol">B</span>The paragraph near the top that explains why this story matters and why the reader should care</div>
+<div class="opt" onclick="so(this,'q-4-2','c')"><span class="ol">C</span>The final paragraph containing background information</div>
+<div class="opt" onclick="so(this,'q-4-2','d')"><span class="ol">D</span>A paragraph containing statistical data to support the lead</div>
+</div></div>
+<button class="qs-btn" onclick="cq('quiz-4',{'q-4-1':'b','q-4-2':'b'})">Submit</button>
+<div class="qr" id="quiz-4-r"></div>
+</div>`}
+};
+
+const L2 = {
+5:{tag:'tag-r',tl:'Reporting',num:'Lesson 05',dur:'35 min',diff:'Intermediate',
+title:'Specialized Beat Reporting',
+sub:'In-depth beat reporting, investigative instincts, rural journalism, and covering the communities mainstream media ignores.',
+body:`
+<h2>The Beat Reporter: Specialist Who Writes for Everyone</h2>
+<p>Beat reporting is the backbone of serious journalism. A beat reporter covers one domain — courts, health, politics, education, environment — with the depth of a specialist and the clarity of a communicator. Over months and years, they become an institutional memory for their publication: they know the players, the history, the unspoken rules, and the subtle signs that something is about to go wrong.</p>
+<div class="co co-tip"><div class="co-lbl">The Beat Reporter's Edge</div><p>The beat reporter who has covered Chennai Corporation for three years knows budget estimates for road repair are habitually inflated by 30-40%. The general assignment reporter dispatched for the same story does not. Deep beat knowledge turns routine announcements into accountability journalism.</p></div>
+<h2>Major Reporting Beats</h2>
+<table>
+<tr><th>Beat</th><th>Key Institutions</th><th>Essential Knowledge</th></tr>
+<tr><td><strong>Crime & Courts</strong></td><td>Police, magistrate courts, High Court</td><td>IPC sections, bail provisions, contempt rules, presumption of innocence</td></tr>
+<tr><td><strong>Politics</strong></td><td>State Assembly, Parliament, party offices</td><td>Constitutional provisions, electoral law, budget process</td></tr>
+<tr><td><strong>Health</strong></td><td>Hospitals, ICMR, Health Ministry</td><td>Clinical trial phases, drug approval process, statistics literacy</td></tr>
+<tr><td><strong>Environment</strong></td><td>TNPCB, MoEF, NGT, forest department</td><td>Environmental law, climate science basics, ecological terminology</td></tr>
+<tr><td><strong>Education</strong></td><td>Schools, universities, UGC, AICTE</td><td>NEP provisions, accreditation system, examination structure</td></tr>
+<tr><td><strong>Business</strong></td><td>Companies, SEBI, RBI, MCA</td><td>Financial statements, corporate law basics, regulatory filings</td></tr>
+</table>
+<h2>Rural Journalism: The Missing Beat</h2>
+<p>More than 65% of India's population lives in rural areas. Less than 20% of mainstream media coverage focuses on rural issues. Farmer suicides, rural healthcare collapse, groundwater depletion, and village-level corruption are among the most consequential stories in India, and they are chronically undercovered.</p>
+<div class="co co-warn"><div class="co-lbl">The Urban Bias Trap</div><p>Journalists based in Chennai or Delhi develop a professional blind spot: they cover the world as seen from an air-conditioned newsroom in a city containing about 2% of India's population. The farmer in Virudhunagar whose crop failed, the Dalit family denied access to a borewell — these are not "special interest" stories. They are the mainstream story of India, told to almost no one.</p></div>
+<h2>Covering Marginalized Communities</h2>
+<ul>
+<li><strong>Representation in sourcing:</strong> Stories about Dalit communities must include Dalit voices — not just official spokespeople or external advocates speaking on their behalf.</li>
+<li><strong>Language and terminology:</strong> Use the community's preferred self-identification. Consult community leaders on appropriate terminology.</li>
+<li><strong>Context and history:</strong> Individual incidents exist within structural contexts. Report them with that context intact.</li>
+<li><strong>Avoid trauma exploitation:</strong> Don't use graphic images or descriptions that reduce people to victims rather than complete human beings.</li>
+</ul>
+<div class="exb">
+<div class="eh"><span class="ei">🌾</span><div><div class="et">Exercise 5A — Rural Reporting Assignment</div><div class="ety">Field Reporting · 1 Week · Advanced</div></div></div>
+<p>Spend 5 days embedded in a village within 100km of your institution. Your mission: report two stories that have never appeared in any newspaper.</p>
+<ol><li><strong>Day 1-2:</strong> Listen only. Attend community spaces — tea shop, ration shop, bus stand. Identify two issues most urgent to residents (NOT the official headman — ask ordinary people).</li><li><strong>Day 3-4:</strong> Report each story. Minimum 5 different interviews per story. Collect documents. Find one official source who must respond.</li><li><strong>Day 5:</strong> Write Story 1 as a 500-word straight news report. Write Story 2 as a 700-word feature with anecdotal lead.</li></ol>
+<div class="es"><textarea id="ex-5a" placeholder="Describe your rural reporting plan and field notes..."></textarea><button onclick="saveEx('5a')">Save</button></div>
+<div class="sn" id="sn-5a">Saved!</div>
+</div>
+<div class="exb">
+<div class="eh"><span class="ei">⚖</span><div><div class="et">Exercise 5B — Courts Beat Observation</div><div class="ety">Field Observation · Half Day · Intermediate</div></div></div>
+<p>Attend a morning session at your nearest magistrate or session court. Observe proceedings in at least two different courtrooms. Write:</p>
+<ol><li>A 300-word observational piece describing the atmosphere, cases, and people — without identifying accused persons not yet convicted</li><li>A sourcing strategy for developing the courts beat: which officials to cultivate, what documents are publicly accessible</li><li>Identify one case that could develop into a larger story — explain what you would investigate and why it matters</li></ol>
+<div class="es"><textarea id="ex-5b" placeholder="Your court observation report and sourcing strategy..."></textarea><button onclick="saveEx('5b')">Save</button></div>
+<div class="sn" id="sn-5b">Saved!</div>
+</div>`},
+
+6:{tag:'tag-e',tl:'Editing',num:'Lesson 06',dur:'30 min',diff:'Intermediate',
+title:'News Editing Principles',
+sub:"The sub-editor's complete toolkit — evaluating copy, fact-checking, legal review, cutting, polishing, and the CARE framework.",
+body:`
+<h2>The Editor as Reader Advocate</h2>
+<p>The editor is the reader's representative inside the newsroom. While the reporter has been living with the story for days, the editor comes to the copy fresh, with the reader's ignorance and the reader's impatience. A good editor asks: <em>Does this serve the reader?</em> Not: <em>Does this impress the reporter?</em></p>
+<div class="lq"><blockquote>"A good editor doesn't change what you write — a good editor changes what you meant to write into what you actually wrote."</blockquote><cite>— Universal newsroom wisdom</cite></div>
+<h2>The CARE Framework</h2>
+<div class="kt">
+<div class="kc"><div class="k">C — Clarity</div><div class="d">Every sentence must be immediately understandable to a reader with no specialist knowledge. If you had to re-read it, so will the reader — except they'll give up.</div></div>
+<div class="kc"><div class="k">A — Accuracy</div><div class="d">Every fact must be verifiable. Every name spelled correctly. Every statistic sourced. Every quote verbatim or clearly paraphrased.</div></div>
+<div class="kc"><div class="k">R — Relevance</div><div class="d">Every paragraph must advance understanding. Ask of every sentence: "What would the reader lose if this weren't here?" If the answer is "nothing," cut it.</div></div>
+<div class="kc"><div class="k">E — Ethics</div><div class="d">Does this story respect the dignity of its subjects? Could it cause unjust harm? Does it risk defamation or contempt of court?</div></div>
+</div>
+<h2>Editing Checklist</h2>
+<ul class="cl">
+<li onclick="toggleCk(this)"><span class="cb"></span><span>Headline: accurate, active voice, specific, reflects actual story?</span></li>
+<li onclick="toggleCk(this)"><span class="cb"></span><span>Lead: most newsworthy information first? Not buried?</span></li>
+<li onclick="toggleCk(this)"><span class="cb"></span><span>Attribution: every significant claim attributed to a named source?</span></li>
+<li onclick="toggleCk(this)"><span class="cb"></span><span>Facts: dates, names, titles, statistics verified against original source?</span></li>
+<li onclick="toggleCk(this)"><span class="cb"></span><span>Balance: all critically-named parties given opportunity to respond?</span></li>
+<li onclick="toggleCk(this)"><span class="cb"></span><span>Legal: defamation risk? Sub-judice? Privacy violations?</span></li>
+<li onclick="toggleCk(this)"><span class="cb"></span><span>Passive voice eliminated where active voice serves better?</span></li>
+<li onclick="toggleCk(this)"><span class="cb"></span><span>All redundant phrases, tautologies, weasel words removed?</span></li>
+</ul>
+<h2>The Flab File: Common Editing Failures</h2>
+<table>
+<tr><th>Original (Flabby)</th><th>Edited (Clean)</th><th>Problem</th></tr>
+<tr><td>"completely destroyed"</td><td>"destroyed"</td><td>"destroyed" is already complete — redundant</td></tr>
+<tr><td>"past history"</td><td>"history"</td><td>History is always past</td></tr>
+<tr><td>"future plans"</td><td>"plans"</td><td>Plans are always for the future</td></tr>
+<tr><td>"at this point in time"</td><td>"now"</td><td>Four words replaced by one</td></tr>
+<tr><td>"due to the fact that"</td><td>"because"</td><td>Five words replaced by one</td></tr>
+<tr><td>"It was reported by officials"</td><td>"Officials said"</td><td>Active voice; four words fewer</td></tr>
+<tr><td>"some experts believe"</td><td>Name them, or cut</td><td>Unfalsifiable; meaningless attribution</td></tr>
+<tr><td>"a large number of people"</td><td>"many people" or give the number</td><td>Vague; use actual figure if available</td></tr>
+</table>
+<h2>Legal Editing: Four Red Flags</h2>
+<ul>
+<li><strong>Defamation:</strong> Does the story make a false statement of fact about an identifiable person that could damage reputation? Is the truth defense watertight?</li>
+<li><strong>Contempt:</strong> Is any case sub-judice? Publishing material prejudicing a judge or jury is criminal contempt.</li>
+<li><strong>Privacy:</strong> Does the story identify minors, rape survivors, or suicide victims who are legally protected?</li>
+<li><strong>Official Secrets:</strong> Does the story contain information from classified government documents?</li>
+</ul>
+<div class="exb">
+<div class="eh"><span class="ei">✂</span><div><div class="et">Exercise 6A — The Full Copy Edit</div><div class="ety">Editing · 45 minutes · Intermediate</div></div></div>
+<p>The following story contains: 6 redundancies, 4 passive voice errors, 3 attribution failures, 2 vague claims, 1 legal risk, and 1 factual imprecision. Find and fix all. Rewrite the entire story — it should be 30% shorter when clean.</p>
+<div style="background:rgba(255,255,255,0.07);padding:16px;border-radius:2px;font-size:13px;line-height:1.85;margin:12px 0;font-style:italic;">"It was reported on Tuesday by various government officials at a press conference held in the state secretariat that a completely new and unique water supply scheme has been approved which will in the future bring water to a large number of residents in the drought-prone districts of the state of Tamil Nadu. The scheme, described by some experts as one of the best schemes of its kind ever launched in the state's past history, will involve laying new pipelines over a distance of several hundreds of kilometers. The minister said the project, which faced various past delays due to the fact that there were funding issues, will now be completed by end of next year. Critics have previously alleged that similar schemes have often been marred by corruption, claims which officials have rejected. The scheme will benefit a large number of farmers as well as households. It may be mentioned that three similar schemes launched in the past decade have not been completed."</div>
+<div class="es"><textarea id="ex-6a" placeholder="Paste your edited version and a 50-word assessment of the story's most serious journalistic weakness..."></textarea><button onclick="saveEx('6a')">Save</button></div>
+<div class="sn" id="sn-6a">Saved!</div>
+</div>
+<div class="qb">
+<div class="qb-head"><h3>Editing Principles — Quiz</h3></div>
+<div class="qq" id="q-6-1"><div class="qt">1. A crime story says: "The accused confessed to the murder." As editor, what is your most urgent concern?</div><div class="opts">
+<div class="opt" onclick="so(this,'q-6-1','a')"><span class="ol">A</span>The sentence is in passive voice and should be rewritten</div>
+<div class="opt" onclick="so(this,'q-6-1','b')"><span class="ol">B</span>Using "confessed" and "murder" before conviction legally prejudges guilt that only a court can determine</div>
+<div class="opt" onclick="so(this,'q-6-1','c')"><span class="ol">C</span>Attribution is missing — arrested by whom?</div>
+<div class="opt" onclick="so(this,'q-6-1','d')"><span class="ol">D</span>The sentence is too long and should be split</div>
+</div></div>
+<div class="qq" id="q-6-2"><div class="qt">2. A story says "Many experts believe the new policy will fail." As editor, the correct action is:</div><div class="opts">
+<div class="opt" onclick="so(this,'q-6-2','a')"><span class="ol">A</span>Publish as written — "many experts" is adequate sourcing</div>
+<div class="opt" onclick="so(this,'q-6-2','b')"><span class="ol">B</span>Replace with a direct quote from a named reporter</div>
+<div class="opt" onclick="so(this,'q-6-2','c')"><span class="ol">C</span>Return to reporter: name the experts with specific concerns, or cut the claim entirely</div>
+<div class="opt" onclick="so(this,'q-6-2','d')"><span class="ol">D</span>Change to "some experts believe" to reduce definitiveness</div>
+</div></div>
+<button class="qs-btn" onclick="cq('quiz-6',{'q-6-1':'b','q-6-2':'c'})">Submit</button>
+<div class="qr" id="quiz-6-r"></div>
+</div>`},
+
+7:{tag:'tag-e',tl:'Editing',num:'Lesson 07',dur:'25 min',diff:'Intermediate',
+title:'Headlines & Advanced Writing',
+sub:'Mastering headlines for print and digital, feature writing structures, column writing, and the editorial voice.',
+body:`
+<h2>The Headline's Six Jobs</h2>
+<p>A headline must simultaneously: accurately summarize the story, attract attention, fit available space, use strong active language, avoid defamation, and in digital — include searchable keywords. Failing any one is a headline failure. Most headlines fail at least two.</p>
+<table>
+<tr><th>Headline Type</th><th>Structure</th><th>Best Used For</th><th>Example</th></tr>
+<tr><td><strong>Declarative</strong></td><td>Subject + Active Verb + Object</td><td>Hard breaking news</td><td>"High Court stays school closure order"</td></tr>
+<tr><td><strong>Question</strong></td><td>Genuinely unanswerable question</td><td>Investigative, analysis</td><td>"Who decides which villages flood first?"</td></tr>
+<tr><td><strong>Command</strong></td><td>Imperative verb + subject</td><td>Service journalism, guides</td><td>"Know your RTI rights before you file"</td></tr>
+<tr><td><strong>Feature / Evocative</strong></td><td>Noun phrase, image-rich</td><td>Long-form, magazine</td><td>"The last weavers of Kanchipuram"</td></tr>
+<tr><td><strong>SEO / Digital</strong></td><td>Keywords front-loaded</td><td>Online publishing</td><td>"Tamil Nadu flood relief 2024: ₹500 crore package announced"</td></tr>
+<tr><td><strong>Pun / Wordplay</strong></td><td>Double meaning, alliteration</td><td>Light features only — never tragedy</td><td>"Cricketers bowl over fans at charity match"</td></tr>
+</table>
+<h2>Feature Writing Structures</h2>
+<h3>The Wall Street Journal Formula</h3>
+<p>Opens with a specific human anecdote → transitions to the general issue → explores in depth → returns to the opening person at the end. The most widely used feature structure in quality journalism worldwide. Powerful because readers who came for a person stay for the issue.</p>
+<h3>The Hourglass</h3>
+<p>Opens with summary lead (inverted pyramid), then transitions at the middle into chronological narrative. Best for crime or disaster stories where the timeline IS the story.</p>
+<h3>The Kabob</h3>
+<p>Alternates between a central narrative thread (the "stick") and analytical sections or different case studies (the "pieces"). Best for issue-based features covering multiple affected individuals.</p>
+<div class="co co-rule"><div class="co-lbl">The Column Writing Test</div><p>After writing your column, find the single sentence that states your argument most precisely. If you can't find it, you haven't written a column — you've written a wandering essay. That sentence belongs in your second paragraph, after an opening that draws the reader in.</p></div>
+<div class="exb">
+<div class="eh"><span class="ei">📰</span><div><div class="et">Exercise 7A — Headline Portfolio</div><div class="ety">Writing · 30 minutes · Intermediate</div></div></div>
+<p>Story: An RTI investigation reveals ₹47 crore allocated for mid-day meals in Chennai schools was spent on contracts awarded to companies with no food industry experience. Several are linked to relatives of a district education official. Children at 23 schools received inadequate meals on multiple days.</p>
+<p>Write six headlines — one of each type above. Then identify one headline you would NOT write and explain why.</p>
+<div class="es"><textarea id="ex-7a" placeholder="All six headlines numbered, plus your rejected option with explanation..."></textarea><button onclick="saveEx('7a')">Save</button></div>
+<div class="sn" id="sn-7a">Saved!</div>
+</div>
+<div class="exb">
+<div class="eh"><span class="ei">🖊</span><div><div class="et">Exercise 7B — The 600-Word Column</div><div class="ety">Opinion Writing · 60 minutes · Advanced</div></div></div>
+<p>Write a 600-word opinion column on any current issue in Tamil Nadu or Indian journalism. Requirements:</p>
+<ol><li>Open with a scene, quote, or fact — not your opinion</li><li>State your thesis clearly in paragraph 2 — a specific, contestable argument</li><li>Provide at least 3 pieces of evidence (statistics, specific examples, expert views)</li><li>Address the strongest counter-argument — and rebut it</li><li>Conclude with a specific call to action or prediction, not a vague "more must be done"</li></ol>
+<p>Exchange with a peer for written feedback: identify the thesis, rate evidence strength (1–5), and assess whether the counter-argument rebuttal is convincing.</p>
+<div class="es"><textarea id="ex-7b" placeholder="Your 600-word column here..."></textarea><button onclick="saveEx('7b')">Save</button></div>
+<div class="sn" id="sn-7b">Saved!</div>
+</div>`},
+
+8:{tag:'tag-b',tl:'Broadcast',num:'Lesson 08',dur:'30 min',diff:'Intermediate',
+title:'Radio Journalism',
+sub:"Writing for the ear, producing packages, presenting on air, and why radio remains the world's most democratic medium.",
+body:`
+<h2>Why Radio Still Matters</h2>
+<p>In a country where 22% of the adult population is illiterate and smartphone penetration is still growing in rural areas, radio remains the single most accessible mass medium. All India Radio reaches 92% of India's population. For a journalist who wants to reach everyone — not just the educated urban reader — radio is not optional.</p>
+<div class="co co-tip"><div class="co-lbl">Radio's Democratic Power</div><p>During the 2018 Kerala floods, community radio stations kept isolated villages informed of rescue operations when phone networks were down. WhatsApp misinformation was causing panic; radio — calm, authoritative, locally trusted — was saving lives. This is what radio does that no other medium can replicate.</p></div>
+<h2>Writing for the Ear: The Complete Rules</h2>
+<table>
+<tr><th>Rule</th><th>Print Version</th><th>Radio Version</th><th>Why</th></tr>
+<tr><td>Sentence length</td><td>Up to 30 words</td><td>Maximum 20 words</td><td>Long sentences lose listeners with no way to re-read</td></tr>
+<tr><td>Attribution position</td><td>After the statement</td><td>Always BEFORE the statement</td><td>Listener must know who is speaking before processing what they say</td></tr>
+<tr><td>Numbers</td><td>₹1,47,83,000</td><td>"about one and a half crore rupees"</td><td>Listeners cannot process multi-digit numbers at broadcast speed</td></tr>
+<tr><td>Quotes</td><td>Direct or indirect with quotation marks</td><td>Play the actual audio clip (byte)</td><td>Hearing a person's voice is more credible than a paraphrase</td></tr>
+<tr><td>Abbreviations</td><td>RTI, AIADMK, CAG</td><td>Spell out on first use; repeat full form</td><td>Listener cannot pause to decode acronyms</td></tr>
+</table>
+<h2>The Radio Package — Step by Step</h2>
+<ol>
+<li><strong>Story Selection:</strong> Does this story have audio potential? Can you record sounds that add to understanding?</li>
+<li><strong>Wildtrack / Natural Sound:</strong> Spend 5 minutes recording ambient soundscape before any interviews. This is your storytelling texture.</li>
+<li><strong>Interviews for Bytes:</strong> Record 10-15 minutes of interviews for a 2-minute package. Good bytes are 15-30 seconds, end on a complete thought, are specific not general.</li>
+<li><strong>Script Writing:</strong> Write the reporter tracks around the bytes. Track introduces context; byte provides the human voice; track continues. Never bridge two bytes without an intervening track.</li>
+<li><strong>Recording the Track:</strong> In a quiet space, read at broadcast pace (slightly slower than conversation). Smile while recording — listeners can hear it in your voice.</li>
+<li><strong>Editing:</strong> Assemble track → byte → track → byte → closing track. Fade wildtrack under all voice. Package length: 90-150 seconds for news, up to 5 minutes for features.</li>
+</ol>
+<h2>Presentation: The Professional Standard</h2>
+<ul>
+<li><strong>Pace:</strong> 140-160 words per minute. Slower for emotional/complex content. Faster signals urgency.</li>
+<li><strong>Pitch:</strong> Vary pitch to signal importance. Monotone is the death of radio.</li>
+<li><strong>Diction:</strong> Every consonant. Tamil names must be pronounced correctly — not approximated.</li>
+<li><strong>Avoid the "Radio Voice" Trap:</strong> Modern radio presenting is conversational — as if explaining an important story to a friend.</li>
+</ul>
+<div class="exb">
+<div class="eh"><span class="ei">🎙</span><div><div class="et">Exercise 8A — Complete Radio Package Production</div><div class="ety">Full Production · 3 Hours · Advanced</div></div></div>
+<p>Produce a complete, professional-quality 2-minute radio news package on a current local issue.</p>
+<ol><li><strong>Pre-production brief:</strong> Who, what, where you will record; equipment needed; sounds you anticipate</li><li><strong>Recording:</strong> Minimum 3 different voice sources; at least 2 minutes of wildtrack; record presenter track in a quiet space</li><li><strong>Script:</strong> Write the full script — every word of your tracks, every byte cued, every sound effect noted</li><li><strong>Edit:</strong> Assemble using Audacity (free). Finished piece: 90-120 seconds. Submit audio file AND full script.</li><li><strong>Self-critique:</strong> 200 words on what works, what you would do differently, and what you learned about radio's limitations for this story</li></ol>
+<div class="rubric"><div class="rubric-head">Production Rubric</div><table><tr><th>Element</th><th>Excellent</th><th>Adequate</th><th>Needs Work</th></tr><tr><td>Audio quality</td><td>Clear, no distortion, controlled background</td><td>Mostly clear, minor issues</td><td>Distortion or distracting noise</td></tr><tr><td>Script quality</td><td>Natural, specific, attribution correct</td><td>Mostly good, some stiffness</td><td>Written for eye not ear</td></tr><tr><td>Source diversity</td><td>3+ distinct voice types</td><td>2 voice types</td><td>Single perspective</td></tr></table></div>
+<div class="es"><textarea id="ex-8a" placeholder="Paste your full radio script here. Submit audio file separately to instructor."></textarea><button onclick="saveEx('8a')">Save</button></div>
+<div class="sn" id="sn-8a">Saved!</div>
+</div>`},
+
+9:{tag:'tag-b',tl:'Broadcast',num:'Lesson 09',dur:'30 min',diff:'Intermediate',
+title:'Television Journalism',
+sub:'Visual grammar, the complete TV package, mobile journalism, scripting for visual media, and the ethics of what you show.',
+body:`
+<h2>The Visual Contract</h2>
+<p>Television journalism is built on a contract with viewers: the pictures must match the words, and the words must serve the pictures. When they conflict — when the reporter says "tensions have eased" while the camera shows a baton charge — the viewer believes the pictures. Always. Think in two simultaneous tracks: what am I saying, and what is being shown while I say it?</p>
+<h2>Visual Grammar</h2>
+<table>
+<tr><th>Shot Type</th><th>Abbr.</th><th>What It Shows</th><th>When to Use</th></tr>
+<tr><td>Extreme Wide Shot</td><td>EWS</td><td>Full landscape or environment</td><td>Scale of crowd or disaster; scene establishment</td></tr>
+<tr><td>Wide Shot</td><td>WS</td><td>Subject within environment</td><td>Context shots; establishing reporter location</td></tr>
+<tr><td>Mid Shot</td><td>MS</td><td>Subject from waist up</td><td>Interviews; action showing hands and body language</td></tr>
+<tr><td>Close-Up</td><td>CU</td><td>Face filling frame</td><td>Emotional moments; revealing facial reactions</td></tr>
+<tr><td>Extreme Close-Up</td><td>ECU</td><td>Eyes, hands, specific detail</td><td>Specific evidence; powerful emotional punctuation</td></tr>
+<tr><td>Cutaway / B-roll</td><td>B/R</td><td>Related subject, not interview</td><td>Illustrate reporter descriptions; cover edit points</td></tr>
+</table>
+<h2>Complete TV Package Structure</h2>
+<div class="co co-ex"><div class="co-lbl">Professional Package Rundown</div><p><strong>1. Anchor intro (studio):</strong> 20-30 seconds. Sets context, tosses to reporter.<br/><strong>2. Opens:</strong> Compelling B-roll + reporter voiceover establishing the visual story.<br/><strong>3. Track 1:</strong> Reporter narrates, B-roll illustrates. 15-25 seconds.<br/><strong>4. Byte 1:</strong> Best interview clip. Most newsworthy quote. Lower third on screen.<br/><strong>5. Track 2:</strong> Bridge — context, transition to next angle.<br/><strong>6. Standup:</strong> Reporter on camera at location. Credibility and transition.<br/><strong>7. Byte 2:</strong> Second perspective — contrasting or complementary.<br/><strong>8. Closing track:</strong> Wraps story, provides context.<br/><strong>9. Sig-out:</strong> "Priya Rajan, NDTV, Chennai."</p></div>
+<h2>Mobile Journalism (MOJO)</h2>
+<p>The BBC, Reuters, and every major Indian news channel now has reporters producing broadcast content on smartphones. Essential kit:</p>
+<ul>
+<li><strong>Phone:</strong> Any flagship (2020 or newer) with 4K video</li>
+<li><strong>Microphone:</strong> Clip-on lavalier mic (₹1500-3000) eliminates 80% of audio quality problems</li>
+<li><strong>Stabilizer:</strong> Basic gimbal (₹2000-5000) eliminates shaky footage</li>
+<li><strong>Editing:</strong> CapCut (free, powerful), Adobe Premiere Rush, or iMovie</li>
+</ul>
+<div class="co co-warn"><div class="co-lbl">The Ethics of What You Show</div><p>Graphic images of violence or suffering must meet a high bar: the public interest value must outweigh the harm to victims, families, and vulnerable viewers. "But we got the footage" is never sufficient justification. Ask: what does showing this add that words cannot convey? If the answer is "not much" — don't show it.</p></div>
+<div class="exb">
+<div class="eh"><span class="ei">📹</span><div><div class="et">Exercise 9A — Professional TV Package</div><div class="ety">Full Production · Full Day · Advanced</div></div></div>
+<p>Produce a professional 2-minute TV news package on a local public interest story.</p>
+<ol><li><strong>Pre-production:</strong> Shot list (minimum 15 planned shots), interview brief, rough script outline</li><li><strong>Production:</strong> Minimum 20 minutes of footage; 3+ interview sources; standup on location with good lighting</li><li><strong>Post-production:</strong> Edit to exactly 2:00-2:15. Add lower-third name graphics. No jump cuts — cutaways cover all interview edits.</li><li><strong>Submission:</strong> Video file + full shooting script + 200-word production journal</li></ol>
+<div class="rubric"><div class="rubric-head">Package Rubric</div><table><tr><th>Element</th><th>Excellent (A)</th><th>Good (B)</th><th>Developing (C)</th></tr><tr><td>Visual storytelling</td><td>Variety of shots; pictures tell story independently</td><td>Adequate variety; some single-shot over-reliance</td><td>Repetitive shots; pictures add nothing to words</td></tr><tr><td>Script quality</td><td>Conversational; attribution correct; active voice</td><td>Mostly good; occasional awkward phrasing</td><td>Reads like a print story; not written for pictures</td></tr><tr><td>Audio</td><td>Clean throughout; natural sound used creatively</td><td>Mostly clean; some location noise issues</td><td>Wind noise, distortion, or inaudible sections</td></tr></table></div>
+<div class="es"><textarea id="ex-9a" placeholder="Paste your full shooting script here. Submit video file separately."></textarea><button onclick="saveEx('9a')">Save</button></div>
+<div class="sn" id="sn-9a">Saved!</div>
+</div>`},
+
+10:{tag:'tag-d',tl:'Digital',num:'Lesson 10',dur:'30 min',diff:'Intermediate',
+title:'Social Media Journalism',
+sub:'Social platforms as reporting tools, the complete verification workflow, fake news anatomy, and the ethics of the networked newsroom.',
+body:`
+<h2>The Verification Crisis</h2>
+<p>In 2012, a photograph of a woman carrying a child through flooded streets went viral during Hurricane Sandy. Multiple news organizations published it. It was from the 2010 Pakistan floods — two years old, wrong continent. The verification failure took 30 seconds of reverse image searching to detect.</p>
+<p>Speed is social media's value and its danger. The journalist's competitive advantage is not speed — platforms will always beat journalists to publication. The advantage is <strong>verified accuracy</strong>. A wrong story published first is a journalistic failure. A correct story published second is journalism.</p>
+<h2>Social Media as Reporting Tools</h2>
+<table>
+<tr><th>Platform</th><th>Primary Journalistic Use</th><th>Key Limitation</th></tr>
+<tr><td>Twitter / X</td><td>Breaking news monitoring; official statements; source finding</td><td>Viral misinformation spreads fastest here</td></tr>
+<tr><td>Facebook</td><td>Community group monitoring; local news; viral content tracking</td><td>Algorithm prioritizes engagement over accuracy</td></tr>
+<tr><td>WhatsApp</td><td>Primary news vector in rural India; community tips</td><td>End-to-end encryption makes verification extremely difficult</td></tr>
+<tr><td>YouTube</td><td>Video verification; archiving; long-form video journalism</td><td>Monetization incentivizes misinformation at scale</td></tr>
+</table>
+<h2>The Professional Verification Workflow</h2>
+<h3>Step 1: Stop</h3>
+<p>Before sharing, publishing, or forwarding, pause. Emotional content — outrage-inducing or heartwarming — spreads fastest and is most often manipulated. The more urgently you feel like sharing, the more urgently you should verify.</p>
+<h3>Step 2: Investigate the Source</h3>
+<p>Who posted this originally? When did this account first appear? What is its history? Does it have a track record of accurate posts, or a pattern of inflammatory content?</p>
+<h3>Step 3: Verify the Image or Video</h3>
+<ul>
+<li><strong>Google Reverse Image Search:</strong> Right-click any image → "Search image with Google." Shows every website that has used this image and when it first appeared.</li>
+<li><strong>TinEye:</strong> More comprehensive reverse image database for older images.</li>
+<li><strong>InVID / WeVerify plugin:</strong> For videos — breaks into keyframes and runs reverse image searches on each frame.</li>
+<li><strong>EXIF Metadata:</strong> Images contain camera type, date/time, sometimes GPS coordinates. Use Jeffrey's Exif Viewer.</li>
+</ul>
+<h3>Step 4: Geolocate</h3>
+<p>Compare landmarks, architecture, vegetation in the image with satellite imagery (Google Maps Street View, Google Earth). This is how journalists proved "India protest" footage was actually from South America.</p>
+<h3>Step 5: Cross-Reference</h3>
+<p>Has any credible independent outlet verified this? Credible means: known publication, named reporters, editorial standards. Not: anonymous Telegram channels or outlets known for unverified content.</p>
+<div class="exb">
+<div class="eh"><span class="ei">🔬</span><div><div class="et">Exercise 10A — The Verification Laboratory</div><div class="ety">Digital Verification · 90 minutes · Advanced</div></div></div>
+<p>Your instructor will provide 8 pieces of social media content that have previously circulated in India as "news." Apply the full verification workflow. For each, write a 200-word fact-check report:</p>
+<ol><li><strong>The Claim:</strong> What is being asserted, and where did it originate?</li><li><strong>Our Findings:</strong> What did verification reveal?</li><li><strong>Evidence:</strong> What tools did you use? What did you find?</li><li><strong>Verdict:</strong> True / False / Misleading / Partly True / Unverifiable</li><li><strong>Why It Spread:</strong> What made this content persuasive?</li></ol>
+<div class="co co-green"><div class="co-lbl">Professional Standard</div><p>Your fact-check must be reproducible — a reader following your methodology must reach the same conclusion. Document every step and every source consulted. Evidence you cannot show does not exist.</p></div>
+<div class="es"><textarea id="ex-10a" placeholder="Paste your 8 fact-check reports here, clearly numbered..."></textarea><button onclick="saveEx('10a')">Save</button></div>
+<div class="sn" id="sn-10a">Saved!</div>
+</div>
+<div class="qb">
+<div class="qb-head"><h3>Digital Journalism — Quiz</h3></div>
+<div class="qq" id="q-10-1"><div class="qt">1. A journalist finds a compelling video on Twitter/X that appears to show a recent flood in Tamil Nadu. What is the FIRST verification step?</div><div class="opts">
+<div class="opt" onclick="so(this,'q-10-1','a')"><span class="ol">A</span>Publish immediately — the public needs to know</div>
+<div class="opt" onclick="so(this,'q-10-1','b')"><span class="ol">B</span>Stop and investigate the source account — check its history and credibility</div>
+<div class="opt" onclick="so(this,'q-10-1','c')"><span class="ol">C</span>Call the State Disaster Management Authority for comment</div>
+<div class="opt" onclick="so(this,'q-10-1','d')"><span class="ol">D</span>Ask colleagues if they have seen it before</div>
+</div></div>
+<button class="qs-btn" onclick="cq('quiz-10',{'q-10-1':'b'})">Submit</button>
+<div class="qr" id="quiz-10-r"></div>
+</div>`},
+
+11:{tag:'tag-data',tl:'Data',num:'Lesson 11',dur:'35 min',diff:'Advanced',
+title:'Data Journalism',
+sub:"Finding stories in numbers, reading government data, visualizing information, and why spreadsheets are the journalist's most powerful tool.",
+body:`
+<h2>Why Data Journalism?</h2>
+<p>A politician says: "Crime has fallen under this government." A data journalist asks: Which crimes? Compared to what baseline year? In which districts? Measured how? The difference between the politician's claim and the data journalist's investigation is often a spreadsheet and a few hours. The resulting story is almost always more accurate, more important, and more difficult to dismiss.</p>
+<div class="lq"><blockquote>"Torture the data long enough and it will confess to anything. The data journalist's job is to prevent torture — and let the numbers speak honestly."</blockquote><cite>— Adapted from Ronald Coase</cite></div>
+<h2>Data Sources Every Indian Journalist Must Know</h2>
+<div class="kt">
+<div class="kc"><div class="k">Census of India</div><div class="d">Population, literacy, housing, migration. censusindia.gov.in — granular down to village level. 2021 census delayed; 2011 remains current.</div></div>
+<div class="kc"><div class="k">NCRB</div><div class="d">National Crime Records Bureau. Annual "Crime in India" report: state-wise crime statistics, prison data, accident data.</div></div>
+<div class="kc"><div class="k">CAG Reports</div><div class="d">Comptroller & Auditor General audits of government spending. Publicly available. Consistently reveal misappropriation of public funds.</div></div>
+<div class="kc"><div class="k">Election Commission</div><div class="d">Full election results, all candidate affidavits (including criminal cases and declared assets), campaign finance data.</div></div>
+<div class="kc"><div class="k">MCA21</div><div class="d">Ministry of Corporate Affairs portal: all company filings, director lists, financial statements, shareholding patterns — all public.</div></div>
+<div class="kc"><div class="k">RTI Applications</div><div class="d">Request specific datasets not publicly available. Legally required response within 30 days. The investigative journalist's first tool.</div></div>
+</div>
+<h2>Five Questions to Ask Every Dataset</h2>
+<ol>
+<li><strong>Who collected this data, and why?</strong> Government crime statistics undercount crimes that weren't reported. Know the methodology.</li>
+<li><strong>What is the denominator?</strong> "Crime increased by 500 cases" is alarming. "Crime rate per lakh population increased from 312 to 318" may not be. Always look for rates, not raw numbers.</li>
+<li><strong>What changed in the methodology?</strong> If 2022 shows a 40% drop in a crime category, find out if the crime was reclassified — not if it actually decreased.</li>
+<li><strong>What is NOT in this dataset?</strong> Absence of data is also data. Government datasets often exclude embarrassing categories.</li>
+<li><strong>Can I cross-reference against an independent source?</strong> Government reports 47 farmer suicides; farmers' organization reports 340. The discrepancy is the story.</li>
+</ol>
+<h2>Basic Data Journalism Tools</h2>
+<table>
+<tr><th>Tool</th><th>Use</th><th>Cost</th></tr>
+<tr><td>Google Sheets / Excel</td><td>Data cleaning, sorting, filtering, pivot tables</td><td>Free (Sheets)</td></tr>
+<tr><td>Datawrapper</td><td>Professional charts and maps; publish-ready output</td><td>Free tier</td></tr>
+<tr><td>Flourish</td><td>Interactive visualizations, maps, timelines</td><td>Free tier</td></tr>
+<tr><td>Tabula</td><td>Extract tables from PDF government reports</td><td>Free</td></tr>
+<tr><td>OpenRefine</td><td>Clean messy data — standardize names, remove duplicates</td><td>Free</td></tr>
+</table>
+<div class="exb">
+<div class="eh"><span class="ei">📊</span><div><div class="et">Exercise 11A — Government Data Story</div><div class="ety">Data Analysis + Writing · Full Day · Advanced</div></div></div>
+<p>Download the most recent NCRB "Crime in India" report. Navigate to Tamil Nadu state data. Your task:</p>
+<ol><li><strong>Find three unexpected findings</strong> — not obvious headline numbers, but surprising trends or alarming patterns</li><li><strong>For each finding:</strong> Verify against one independent source; calculate the relevant rate per lakh population; compare to national average and three comparable states</li><li><strong>Write a 600-word data-driven story</strong> on your most significant finding. Include at least two data visualizations created in Datawrapper. Must include: your key finding in the lead, methodology explained in one paragraph, what this means for real people, and one expert source for analytical context</li></ol>
+<div class="es"><textarea id="ex-11a" placeholder="Describe your three findings and paste your story draft here..."></textarea><button onclick="saveEx('11a')">Save</button></div>
+<div class="sn" id="sn-11a">Saved!</div>
+</div>`},
+
+12:{tag:'tag-inv',tl:'Investigative',num:'Lesson 12',dur:'40 min',diff:'Advanced',
+title:'Investigative Journalism',
+sub:'Long-form investigation methodology, source development, document analysis, publication strategy, and protecting yourself and your sources.',
+body:`
+<h2>What Makes It Investigative?</h2>
+<p>All good journalism involves investigation. But investigative journalism specifically involves the sustained, systematic exposure of wrongdoing that those responsible are actively trying to conceal. The distinction matters: a well-reported story about a policy failure is good reporting. A 6-month investigation that proves the failure was deliberate, shows who benefited financially, and traces the money — that is investigative journalism.</p>
+<div class="lq"><blockquote>"Investigative journalism is verification in its most demanding form. Every claim must be bulletproof because the people you're exposing will have expensive lawyers to challenge every word."</blockquote><cite>— Paranjoy Guha Thakurta</cite></div>
+<h2>The Investigation Framework</h2>
+<h3>Phase 1: Tip and Initial Assessment</h3>
+<p>Before committing weeks of resources, assess: Is the wrongdoing systemic or isolated? Is there provable harm to real people? Is there documentary evidence that can be independently verified? Can you safely protect the source while pursuing this?</p>
+<h3>Phase 2: Document Collection</h3>
+<div class="kt">
+<div class="kc"><div class="k">RTI Responses</div><div class="d">File strategically — narrow, specific requests yield more usable data than broad ones. Documents legally provided within 30 days.</div></div>
+<div class="kc"><div class="k">Court Records</div><div class="d">All court filings are public documents — FIRs, chargesheets, judgments, affidavits. High Courts have online portals.</div></div>
+<div class="kc"><div class="k">Company Filings</div><div class="d">MCA21 portal: all company financials, director lists, shareholding patterns. Essential for following money trails.</div></div>
+<div class="kc"><div class="k">Electoral Affidavits</div><div class="d">Every candidate must declare assets, liabilities, criminal cases. Compare across election cycles to track unexplained wealth growth.</div></div>
+<div class="kc"><div class="k">Land Records</div><div class="d">Property registrations are state public records. Essential for tracking land acquisition corruption and money into real estate.</div></div>
+<div class="kc"><div class="k">CAG Audit Reports</div><div class="d">Routinely document misappropriation, ghost projects, and financial irregularities. Publicly available online.</div></div>
+</div>
+<h3>Phase 3: Timeline and Evidence Map</h3>
+<p>Map every key event, decision, payment, and communication you can document. Gaps in the timeline are often where the wrongdoing is hidden. Anomalies — a payment dated before the contract was signed — are often the story itself.</p>
+<h3>Phase 4: Right of Reply</h3>
+<p>Before publishing, every person or institution named critically must receive a meaningful opportunity to respond. Send written questions. Document every contact attempt. Non-response is a quotable fact: "The Ministry did not respond to detailed questions sent 10 days before publication."</p>
+<h2>Source Protection in India</h2>
+<ul>
+<li><strong>Digital hygiene:</strong> Use Signal for source communication. ProtonMail for sensitive email. VPN when researching.</li>
+<li><strong>Physical security:</strong> Meet sensitive sources in person, private locations. No phone. No electronic device that could be tracked.</li>
+<li><strong>Document security:</strong> Store on encrypted drives, not cloud services subject to government requests. Use VeraCrypt for file encryption.</li>
+<li><strong>Compartmentalization:</strong> Only the editor and legal counsel need to know the source's identity — and only when publication is imminent.</li>
+</ul>
+<div class="exb">
+<div class="eh"><span class="ei">🕵</span><div><div class="et">Exercise 12A — The Mini-Investigation</div><div class="ety">Investigation Project · 2 Weeks · Advanced</div></div></div>
+<p>Conduct a real small-scale investigation into a local public institution — a government hospital, municipal ward, university department, or government scheme.</p>
+<ol><li><strong>Week 1 — Documents:</strong> File at least 2 RTI applications. Download publicly available data. Collect accessible records. Build a timeline from documents.</li><li><strong>Week 1 — Sources:</strong> Interview at least 3 sources with direct knowledge. Apply the TRUMP test to each. Document every conversation.</li><li><strong>Week 2 — Verification:</strong> Cross-reference every claim against documentary evidence. Distinguish what you can PROVE vs. what you can only allege.</li><li><strong>Week 2 — Publication:</strong> Send formal right of reply. Write a 1,000-word investigation based only on what you can prove. Separately note what you suspect but could not prove.</li></ol>
+<div class="es"><textarea id="ex-12a" placeholder="Your investigation plan, RTI applications filed, key findings, and story draft..."></textarea><button onclick="saveEx('12a')">Save</button></div>
+<div class="sn" id="sn-12a">Saved!</div>
+</div>`},
+
+13:{tag:'tag-inv',tl:'Investigative',num:'Lesson 13',dur:'30 min',diff:'Advanced',
+title:'RTI & Document Journalism',
+sub:'Mastering the Right to Information Act, strategic filing, reading government documents, and building accountability stories from paper trails.',
+body:`
+<h2>The RTI Revolution</h2>
+<p>The Right to Information Act, 2005 is arguably the single most powerful tool ever given to Indian citizens for accountability. Before 2005, the only way to obtain government documents was through sources willing to leak them illegally. After 2005, the government is legally required to provide information within 30 days — or explain why it cannot. For journalists, this transformed the investigative landscape entirely.</p>
+<div class="co co-green"><div class="co-lbl">What You Can Get Through RTI</div><p>Any information held by any "public authority" — all central and state government departments, public sector undertakings, and government-funded bodies. This includes: government contracts, expenditure records, meeting minutes, inspection reports, and correspondence. What you cannot get: Cabinet deliberations, intelligence files, information affecting sovereignty or security.</p></div>
+<h2>Strategic RTI Filing: Four Rules</h2>
+<ol>
+<li><strong>Be specific, not broad:</strong> "Provide all information about road construction in Tamil Nadu" will be rejected. "Provide tendering documents, awarded contract value, and contractor identity for NH-44 between Krishnagiri and Vellore, 2021-23" will be answered.</li>
+<li><strong>Target the right authority:</strong> The information must be held by the public authority you're approaching. Research which department holds the specific records before filing.</li>
+<li><strong>File multiple applications:</strong> For complex investigations, file RTIs to multiple departments simultaneously. Responses often cross-reference and reveal inconsistencies.</li>
+<li><strong>Anticipate denial and plan the appeal:</strong> Prepare your first appeal before you receive the original response. If denied, appeal to the State or Central Information Commission.</li>
+</ol>
+<h2>Reading Government Documents</h2>
+<h3>Tender Documents</h3>
+<p>Look for: time between advertising a tender and closing it (too short = designed to exclude competition), technical specifications written so narrowly only one company can qualify, and price comparisons with similar contracts in other districts.</p>
+<h3>Budget Estimates vs. Actual Expenditure</h3>
+<p>Compare budget estimates with actual expenditure in the following year. Consistent under-expenditure reveals ghost schemes — allocations made for political optics that are never actually spent on their stated purpose.</p>
+<h3>Meeting Minutes</h3>
+<p>Municipal and panchayat meeting minutes are public documents revealing which decisions were made, by whom. They often record dissent — committee members who objected, overruled by the majority.</p>
+<div class="exb">
+<div class="eh"><span class="ei">📄</span><div><div class="et">Exercise 13A — File a Real RTI</div><div class="ety">Applied RTI · 1 Month · Intermediate</div></div></div>
+<p>File an actual RTI application to a public authority on a public interest issue of your choice. This is not a simulation.</p>
+<ol><li><strong>Identify the issue:</strong> Infrastructure spending, school quality, water supply, hospital conditions — choose something where government information would be valuable</li><li><strong>Draft the application:</strong> Follow the four rules above. Have a peer review it for precision before filing.</li><li><strong>File it:</strong> Physically at the government office (get acknowledgment receipt) or online at rtionline.gov.in for central government</li><li><strong>Document the process:</strong> When you filed, any acknowledgment, the 30-day deadline</li><li><strong>Write a story draft:</strong> Even before receiving the response, draft the story you would write if the RTI confirms your hypothesis. This forces you to think clearly about what evidence you actually need.</li></ol>
+<div class="es"><textarea id="ex-13a" placeholder="Paste your RTI application text and story hypothesis here..."></textarea><button onclick="saveEx('13a')">Save</button></div>
+<div class="sn" id="sn-13a">Saved!</div>
+</div>`},
+
+14:{tag:'tag-photo',tl:'Visual',num:'Lesson 14',dur:'25 min',diff:'Intermediate',
+title:'Photojournalism',
+sub:'Visual ethics, the decisive moment, composition principles, caption writing, and the photographer\'s specific responsibilities.',
+body:`
+<h2>The Photograph as Evidence and Argument</h2>
+<p>A photograph carries two types of authority that text does not: the authority of <em>presence</em> (the photographer was there) and the authority of the mechanical record (the camera captured exactly what the light delivered). This dual authority makes photographs uniquely powerful — and uniquely manipulable. A photograph out of context can reverse its own meaning.</p>
+<div class="lq"><blockquote>"Your first 10,000 photographs are your worst — but your first 10,000 ethical decisions are also when you build the habits that will define your career."</blockquote><cite>— Adapted from Henri Cartier-Bresson</cite></div>
+<h2>Composition: The Technical Foundation</h2>
+<div class="kt">
+<div class="kc"><div class="k">Rule of Thirds</div><div class="d">Divide frame into 3x3 grid. Place key subjects at intersection points, not the center. Creates visual tension and interest.</div></div>
+<div class="kc"><div class="k">Leading Lines</div><div class="d">Roads, rivers, fences draw the eye through the frame toward the subject. Control where viewers look first.</div></div>
+<div class="kc"><div class="k">Framing</div><div class="d">Use foreground elements — doorways, branches, archways — to frame the subject within the frame. Creates depth and context.</div></div>
+<div class="kc"><div class="k">Depth of Field</div><div class="d">Narrow depth of field isolates subject. Wide depth of field shows subject in context. Choose based on what the story requires.</div></div>
+<div class="kc"><div class="k">Light Direction</div><div class="d">Side lighting reveals texture. Back lighting creates silhouettes. Best natural light: one hour after sunrise or before sunset.</div></div>
+<div class="kc"><div class="k">The Decisive Moment</div><div class="d">Cartier-Bresson's concept: the instant when elements align to capture both the event and its meaning. Anticipate it; don't wait.</div></div>
+</div>
+<h2>Photojournalism Ethics: The Hard Cases</h2>
+<ul>
+<li><strong>The dying subject:</strong> Do you photograph a dying person in a public place? The answer depends on genuine public interest function and whether publication respects the dignity of the person and family.</li>
+<li><strong>The staged moment:</strong> If a grieving person poses for your camera, is the resulting photograph honest? Disclose context in the caption.</li>
+<li><strong>Minor identification:</strong> Children who are victims, accused, or bystanders must be protected. Legally required for minor rape survivors; ethically required more broadly.</li>
+<li><strong>Digital manipulation:</strong> Removing elements using Photoshop is prohibited. Adjusting brightness and contrast to accurately represent what was visible to the eye is acceptable. No cloning, compositing, or adding/removing elements.</li>
+</ul>
+<h2>Caption Writing: The Most Under-Taught Skill</h2>
+<ul>
+<li>Identify every named person (full name, title, left to right)</li>
+<li>Explain what is happening — the action, not just the scene</li>
+<li>Provide context the image cannot: when was this? Why does it matter?</li>
+<li>Never state the obvious (don't write "a man walks down a street" when the reader can see that)</li>
+<li>Be scrupulously accurate — a misidentified person in a caption is a serious error</li>
+</ul>
+<div class="exb">
+<div class="eh"><span class="ei">📸</span><div><div class="et">Exercise 14A — The Photo Essay</div><div class="ety">Visual Journalism · Full Day · Intermediate</div></div></div>
+<p>Produce a 10-photograph photo essay on a single subject — a person, community, or place facing change.</p>
+<ol><li><strong>Pre-shoot:</strong> Write a project brief — what is the story? What moments do you need? What is the emotional arc?</li><li><strong>Shoot:</strong> Minimum 200 frames; select 10. Must include: wide establishing shots, environmental portraits, detail close-ups, and at least one decisive moment.</li><li><strong>Edit:</strong> Only brightness/contrast/crop permitted. Sequence 10 images to tell a coherent story with beginning, middle, and end.</li><li><strong>Caption each image:</strong> Full caption for each — who, what, where, when, why it matters.</li><li><strong>Write an editor's note:</strong> 150 words explaining your editorial decisions — what you chose NOT to show and why.</li></ol>
+<div class="es"><textarea id="ex-14a" placeholder="Describe your subject, shoot plan, and paste your captions here..."></textarea><button onclick="saveEx('14a')">Save</button></div>
+<div class="sn" id="sn-14a">Saved!</div>
+</div>`},
+
+15:{tag:'tag-photo',tl:'Visual',num:'Lesson 15',dur:'25 min',diff:'Advanced',
+title:'Multimedia Storytelling',
+sub:'Combining text, audio, video, data, and interactivity into stories that use the full capabilities of digital media.',
+body:`
+<h2>Beyond the Single-Medium Story</h2>
+<p>The best multimedia stories are not print stories with videos attached. They are stories conceived from the beginning as experiences that use multiple media in ways that each medium could not achieve alone. The text explains context. The audio places the reader inside a soundscape. The video captures what cannot be described. The data provides scale. Together they create a depth of understanding no single medium can match.</p>
+<h2>The Medium-Message Matrix</h2>
+<table>
+<tr><th>Story Element</th><th>Best Medium</th><th>Why</th></tr>
+<tr><td>Background context and history</td><td>Text</td><td>Provides precision, density, and can be read at the reader's own pace</td></tr>
+<tr><td>Immersive location atmosphere</td><td>Audio / Ambient sound</td><td>Sound places the reader inside a space that text only describes</td></tr>
+<tr><td>Human emotion and movement</td><td>Video</td><td>Facial expression, gesture, and embodied emotion cannot be substituted</td></tr>
+<tr><td>Scale and comparison</td><td>Data visualization</td><td>Numbers become meaningful at scale with visual representation</td></tr>
+<tr><td>Geographic relationships</td><td>Interactive map</td><td>Spatial data cannot be fully communicated in text or static images</td></tr>
+</table>
+<h2>Free Multimedia Tools</h2>
+<div class="kt">
+<div class="kc"><div class="k">Knight Lab StoryMapJS</div><div class="d">Interactive story maps — excellent for geographically distributed stories like migration routes or disaster coverage.</div></div>
+<div class="kc"><div class="k">Knight Lab TimelineJS</div><div class="d">Interactive timelines with embedded media (images, video, tweets). Browser-based, no coding required.</div></div>
+<div class="kc"><div class="k">Datawrapper / Flourish</div><div class="d">Publish-ready interactive charts, maps, and visualizations. Embed directly in web articles.</div></div>
+<div class="kc"><div class="k">Shorthand</div><div class="d">Scroll-based multimedia storytelling platform used by BBC, Reuters, and major Indian news organizations. Free educational access.</div></div>
+</div>
+<div class="exb">
+<div class="eh"><span class="ei">🎬</span><div><div class="et">Exercise 15A — The Multimedia Package</div><div class="ety">Full Production · 1 Week · Advanced</div></div></div>
+<p>Produce a complete multimedia package on a local public interest story. Minimum requirements:</p>
+<ol><li><strong>Text:</strong> 800-word narrative story (WSJ format)</li><li><strong>Audio:</strong> 90-second ambient audio piece or radio report</li><li><strong>Video:</strong> 60-second visual sequence (pictures and natural sound only — no narration)</li><li><strong>Data:</strong> One interactive visualization (chart or map) in Datawrapper or Flourish</li><li><strong>Photography:</strong> 5 captioned photographs</li><li><strong>Assembly:</strong> Create a Shorthand or Google Sites page integrating all elements into a coherent reading experience</li></ol>
+<p>Submit: the URL of your assembled package + a 300-word production note explaining why each medium was used for each element.</p>
+<div class="es"><textarea id="ex-15a" placeholder="Paste your package URL and 300-word production note here..."></textarea><button onclick="saveEx('15a')">Save</button></div>
+<div class="sn" id="sn-15a">Saved!</div>
+</div>`},
+
+16:{tag:'tag-eth',tl:'Ethics',num:'Lesson 16',dur:'35 min',diff:'Advanced',
+title:'Media Ethics & Dilemmas',
+sub:'Ethical frameworks, the most difficult real-world dilemmas, conflict of interest, trauma journalism, and building an ethical culture in the newsroom.',
+body:`
+<h2>Why Ethics Cannot Be Reduced to Rules</h2>
+<p>Real ethical dilemmas are ethical precisely because the rules either don't cover them, or two rules conflict. The journalist who has never faced a genuine ethical dilemma has either been lucky or hasn't been paying attention.</p>
+<h2>The Four Ethical Frameworks</h2>
+<div class="kt">
+<div class="kc"><div class="k">Deontological (Duty-Based)</div><div class="d">Some actions are inherently right or wrong regardless of consequences. A journalist has a duty to publish verified truth — even if consequences are painful. Associated with Kant.</div></div>
+<div class="kc"><div class="k">Utilitarian (Consequentialist)</div><div class="d">The right action produces the greatest good for the greatest number. Weigh public benefit of publishing against harm caused to individuals. Associated with John Stuart Mill.</div></div>
+<div class="kc"><div class="k">Virtue Ethics</div><div class="d">What would a person of good character — honest, courageous, fair — do in this situation? Focus on the character of the decision-maker, not the rule or consequence alone.</div></div>
+<div class="kc"><div class="k">Care Ethics</div><div class="d">Prioritize relationships, context, and specific needs of affected individuals. Particularly relevant for trauma journalism and coverage of vulnerable communities.</div></div>
+</div>
+<h2>Professional Dilemma Matrix</h2>
+<table>
+<tr><th>Dilemma Type</th><th>The Tension</th><th>Professional Standard</th></tr>
+<tr><td>Conflict of Interest</td><td>Journalist has personal/financial relationship with story subject</td><td>Disclose to editor; if conflict is material, recuse from the story</td></tr>
+<tr><td>Off-Record Revelation</td><td>Source reveals vital public interest information off-the-record</td><td>Cannot publish without separate on-record corroboration; must honor original agreement</td></tr>
+<tr><td>Payment Journalism</td><td>Advertiser/PR firm offers payment for favorable coverage</td><td>Refuse absolutely; report the approach to editor; document it</td></tr>
+<tr><td>Partial Information</td><td>You have verified part of an investigation but not all</td><td>Publish only what you can verify; label clearly what remains unconfirmed</td></tr>
+<tr><td>Graphic Content</td><td>Graphic image of death/violence has significant journalistic value</td><td>Public interest must clearly outweigh harm; warn viewers; require editorial consensus</td></tr>
+</table>
+<h2>Trauma Journalism: Covering People in Crisis</h2>
+<ul>
+<li><strong>Ask, don't assume:</strong> Before interviewing a trauma survivor, explain who you are, what the story is, and the implications. Let them decline. Let them stop at any point.</li>
+<li><strong>Don't reproduce trauma unnecessarily:</strong> Focus on what the person wants to communicate, not on extracting maximum graphic detail.</li>
+<li><strong>Identify suicide safely:</strong> Follow WHO guidelines — do not report method in detail, do not idealize, include crisis support information.</li>
+<li><strong>Consider second-order harms:</strong> A true story may still harm the subject's safety, employment, or family relationships. Weigh this against the public interest served.</li>
+</ul>
+<div class="exb">
+<div class="eh"><span class="ei">⚖</span><div><div class="et">Exercise 16A — The Ethics Panel</div><div class="ety">Group Exercise + Written Analysis · 2 Hours · Advanced</div></div></div>
+<p>Working in groups of 4, each group receives one case. You are the editorial board making a publication decision.</p>
+<div style="background:rgba(255,255,255,0.07);padding:14px;border-radius:2px;margin:10px 0;font-size:13px;line-height:1.75;">
+<strong>Case A:</strong> A whistleblower gives documented evidence of corruption by a District Collector — but only if you agree not to identify them. They are the only source. Documents are real but cannot be authenticated without revealing the source. Publishing without a named source exposes you to defamation risk.<br/><br/>
+<strong>Case B:</strong> You have CCTV footage of a prominent Tamil Nadu politician physically assaulting a party worker. The politician's office says footage is "manipulated." Your technical expert finds no signs of manipulation. A ₹10 crore defamation case has been filed against your publication.<br/><br/>
+<strong>Case C:</strong> A 16-year-old student has died by suicide. The family believes school bullying was the cause. The school disputes this. The family wants the story published. Publishing will identify the school and implicitly other students involved in bullying.<br/><br/>
+<strong>Case D:</strong> Your reporter embedded with a military convoy witnessed soldiers acting in ways that appear to violate rules of engagement. The military has requested — not formally ordered — that the report not be published, citing operational security.
+</div>
+<p>Each group must: (1) Apply all four ethical frameworks to your case. (2) Identify strongest argument for publishing and against. (3) Reach a decision with conditions. (4) Write a 400-word editorial note explaining your decision. (5) Present for class cross-examination.</p>
+<div class="es"><textarea id="ex-16a" placeholder="Which case did your group receive? Document your analysis and decision here..."></textarea><button onclick="saveEx('16a')">Save</button></div>
+<div class="sn" id="sn-16a">Saved!</div>
+</div>`},
+
+17:{tag:'tag-eth',tl:'Media Law',num:'Lesson 17',dur:'35 min',diff:'Advanced',
+title:'Indian Media Law',
+sub:'Constitutional press freedom, defamation (civil and criminal), contempt of court, privacy, the IT Act, and what journalists must know to protect themselves.',
+body:`
+<h2>The Legal Landscape</h2>
+<p>Indian media law is a patchwork of constitutional protections, colonial-era legislation, and evolving judicial interpretation. Journalists who don't understand this landscape are navigating a minefield with no map. The law can be weaponized against journalists — as it increasingly is — by powerful actors who have discovered that legal harassment is a cheaper and more effective silencing tool than outright censorship.</p>
+<h2>Constitutional Framework</h2>
+<div class="kt">
+<div class="kc"><div class="k">Article 19(1)(a)</div><div class="d">Guarantees freedom of speech and expression. Supreme Court has interpreted this to include press freedom (Indian Express v. Union of India, 1985).</div></div>
+<div class="kc"><div class="k">Article 19(2)</div><div class="d">Permits "reasonable restrictions" for: sovereignty, security of state, public order, decency, contempt of court, defamation, and incitement to an offence.</div></div>
+<div class="kc"><div class="k">Article 21</div><div class="d">Right to life and personal liberty. Courts have interpreted this to include the right to receive information and the right to privacy — both relevant to journalism.</div></div>
+<div class="kc"><div class="k">Article 32 / 226</div><div class="d">Right to constitutional remedies — approach Supreme Court (Art. 32) or High Courts (Art. 226) directly when fundamental rights are violated by state action.</div></div>
+</div>
+<h2>Defamation: Civil and Criminal</h2>
+<h3>Civil Defamation</h3>
+<p>The plaintiff must prove: a statement was made, it was false, it referred to the plaintiff, it was published to a third party, and it caused damage to reputation. Key defenses for journalists:</p>
+<ul>
+<li><strong>Truth / Justification:</strong> If the statement is true, it cannot be defamatory. Truth is an absolute defense — but the burden of proof lies with the journalist, not the plaintiff.</li>
+<li><strong>Fair Comment:</strong> Opinion on matters of public interest, based on true facts, is a defense — even if the opinion is harsh.</li>
+<li><strong>Qualified Privilege:</strong> Accurate and fair reports of parliamentary proceedings, court proceedings, and official government functions are protected.</li>
+</ul>
+<h3>Criminal Defamation — Sections 499/500 IPC</h3>
+<p>India is one of very few democracies where defamation is a criminal offense. The Supreme Court upheld this in Subramanian Swamy v. Union of India (2016), disappointing press freedom advocates.</p>
+<div class="co co-warn"><div class="co-lbl">SLAPP Suits — Strategic Lawsuits Against Public Participation</div><p>Criminal defamation cases are filed not to win, but to silence. The cost of defending — legal fees, court appearances, psychological burden — is sufficient to deter further reporting even if the case ultimately fails. This is precisely why some Indian politicians and corporations now routinely file criminal defamation cases against journalists who cover them critically. Know this weapon and plan accordingly.</p></div>
+<h2>IT Act: What Journalists Must Know</h2>
+<table>
+<tr><th>Section</th><th>Provision</th><th>Relevance</th></tr>
+<tr><td>Section 66A</td><td>Struck down (Shreya Singhal, 2015)</td><td>Was used to arrest social media users; now void</td></tr>
+<tr><td>Section 67</td><td>Publishing obscene material electronically</td><td>Applies to online publications; broad definition used selectively</td></tr>
+<tr><td>Section 69</td><td>Power to intercept and monitor information</td><td>Government can compel ISPs to provide journalist communications; protect digital sources accordingly</td></tr>
+<tr><td>Section 79</td><td>Safe harbor for intermediaries</td><td>Online platforms not liable for user content unless notified and failing to act</td></tr>
+</table>
+<div class="exb">
+<div class="eh"><span class="ei">⚖</span><div><div class="et">Exercise 17A — Legal Risk Assessment</div><div class="ety">Legal Analysis · 60 minutes · Advanced</div></div></div>
+<p>Assess the legal risk in each scenario. For each, identify: which law applies, specific risk, journalist's defense, and whether you would recommend publishing.</p>
+<ol>
+<li>A story about a sitting High Court judge's real estate dealings, based on public land records, published while that judge is hearing a case involving a real estate company</li>
+<li>A transcript of a conversation between two government officials about bribing a contractor, obtained by a whistleblower, published in full with both officials named</li>
+<li>A story identifying a 17-year-old accused of murdering a classmate — the name is already circulating widely on social media</li>
+<li>A satirical article portraying the Chief Minister as a historical villain, published with a disclaimer that it is satire</li>
+</ol>
+<div class="es"><textarea id="ex-17a" placeholder="Your legal risk assessment for all four scenarios..."></textarea><button onclick="saveEx('17a')">Save</button></div>
+<div class="sn" id="sn-17a">Saved!</div>
+</div>
+<div class="qb">
+<div class="qb-head"><h3>Media Law — Quiz</h3></div>
+<div class="qq" id="q-17-1"><div class="qt">1. In India, the burden of proof in a civil defamation case lies with:</div><div class="opts">
+<div class="opt" onclick="so(this,'q-17-1','a')"><span class="ol">A</span>The plaintiff — they must prove the statement was false</div>
+<div class="opt" onclick="so(this,'q-17-1','b')"><span class="ol">B</span>The journalist — they must prove the statement was true</div>
+<div class="opt" onclick="so(this,'q-17-1','c')"><span class="ol">C</span>The court — the judge determines truth independently</div>
+<div class="opt" onclick="so(this,'q-17-1','d')"><span class="ol">D</span>Shared equally between plaintiff and defendant</div>
+</div></div>
+<div class="qq" id="q-17-2"><div class="qt">2. The "sub-judice" rule prohibits journalists from:</div><div class="opts">
+<div class="opt" onclick="so(this,'q-17-2','a')"><span class="ol">A</span>Reporting on court decisions after they are announced</div>
+<div class="opt" onclick="so(this,'q-17-2','b')"><span class="ol">B</span>Publishing material that could prejudice an ongoing court case before a verdict is reached</div>
+<div class="opt" onclick="so(this,'q-17-2','c')"><span class="ol">C</span>Identifying judges by name in court reports</div>
+<div class="opt" onclick="so(this,'q-17-2','d')"><span class="ol">D</span>Reporting on cases involving government officials</div>
+</div></div>
+<button class="qs-btn" onclick="cq('quiz-17',{'q-17-1':'b','q-17-2':'b'})">Submit</button>
+<div class="qr" id="quiz-17-r"></div>
+</div>`},
+
+18:{tag:'tag-pr',tl:'Industry',num:'Lesson 18',dur:'30 min',diff:'Intermediate',
+title:'PR, Advertising & the Media Business',
+sub:'Understanding how journalism is funded, where advertising and PR conflict with journalism, and how to navigate commercial pressures professionally.',
+body:`
+<h2>The Business of News</h2>
+<p>Journalism requires money. The sources of that money fundamentally shape the journalism produced — not always through direct interference, but through the subtler pressures of institutional culture and what stories get resourced versus what stories die for lack of budget.</p>
+<h2>Indian Media Revenue Models</h2>
+<table>
+<tr><th>Model</th><th>Revenue Source</th><th>Independence Risk</th><th>Examples</th></tr>
+<tr><td>Advertising-dependent</td><td>Display/classified ads</td><td>High — advertiser pressure on coverage</td><td>Most legacy newspapers and TV channels</td></tr>
+<tr><td>Subscription</td><td>Reader payments</td><td>Low — loyalty is to subscribers, not advertisers</td><td>Newslaundry, The Ken</td></tr>
+<tr><td>Government-funded (DAVP)</td><td>Government advertising</td><td>Very high — government can withdraw funding for critical coverage</td><td>Regional newspapers heavily DAVP-dependent</td></tr>
+<tr><td>Philanthropic</td><td>Foundations, donors</td><td>Medium — dependent on donor values</td><td>The Wire (partially)</td></tr>
+</table>
+<div class="co co-rule"><div class="co-lbl">The Paid News Crisis</div><p>India has a documented, widespread practice of "paid news" — positive coverage of politicians and companies published as journalism but paid for by the subjects. The Press Council has repeatedly documented this. In some regional markets, coverage is openly sold by the centimetre. A journalist who participates in paid news has left the profession, regardless of their byline.</p></div>
+<h2>Working with PR Professionals: The Rules</h2>
+<ul>
+<li><strong>Never suppress a negative story because a PR relationship is at stake.</strong> Your relationship with the public is more important than any PR contact.</li>
+<li><strong>Treat press releases as starting points, not stories.</strong> Every press release requires independent verification and comment from parties not quoted in the release.</li>
+<li><strong>Disclose sponsored content absolutely and prominently.</strong> No exceptions, no ambiguous labeling.</li>
+<li><strong>Never allow advertisers to review copy before publication.</strong> Pre-publication review by commercial interests is the end of editorial independence.</li>
+</ul>
+<div class="exb">
+<div class="eh"><span class="ei">💼</span><div><div class="et">Exercise 18A — Press Release to Story</div><div class="ety">Reporting Exercise · 45 minutes · Beginner</div></div></div>
+<p>You receive this press release. Your task: produce genuine news from it — not a rewritten press release, but an independently reported story.</p>
+<div style="background:rgba(255,255,255,0.07);padding:14px;border-radius:2px;margin:10px 0;font-size:13px;line-height:1.8;font-style:italic;">"FOR IMMEDIATE RELEASE — GreenBuild Infrastructure announces the successful completion of Phase 1 of the Velachery Underpass Project, 6 weeks ahead of schedule. Managing Director R. Krishnamurthy said: 'This achievement reflects our commitment to Chennai's infrastructure development.' The project was awarded in 2021 under a government initiative to reduce traffic congestion in South Chennai."</div>
+<p>Before writing, identify: (1) What questions does this release NOT answer? (2) What sources beyond GreenBuild do you need? (3) Is "6 weeks ahead of schedule" good news — or does the original schedule need examination? (4) What public interest angle is this release designed to obscure?</p>
+<div class="es"><textarea id="ex-18a" placeholder="Your questions, reporting plan, and story draft..."></textarea><button onclick="saveEx('18a')">Save</button></div>
+<div class="sn" id="sn-18a">Saved!</div>
+</div>`},
+
+19:{tag:'tag-pr',tl:'Industry',num:'Lesson 19',dur:'25 min',diff:'Advanced',
+title:'Entrepreneurial Journalism',
+sub:'Building sustainable independent media, revenue model design, digital distribution, audience development, and career strategy.',
+body:`
+<h2>The Independent Journalism Revolution</h2>
+<p>India has seen an explosion of independent digital journalism: The Wire, The News Minute, Newslaundry, The Ken, Puthiya Thalaimurai (digital), The Morning Context, and hundreds of regional operations on YouTube, newsletters, and podcasts. The traditional career path — join a large media house, work up through the ranks — has become less viable as legacy media contracts and new media offers alternative models.</p>
+<h2>Revenue Models for Independent Journalism</h2>
+<div class="kt">
+<div class="kc"><div class="k">Membership / Subscription</div><div class="d">Readers pay monthly or annual fees. Newslaundry's model has demonstrated viability in India. Aligns incentives with readers, not advertisers.</div></div>
+<div class="kc"><div class="k">Newsletter</div><div class="d">Curated journalism by email. Substack, Ghost platforms. Low overhead. Revenue from free + paid tiers. Direct reader relationship without algorithm dependence.</div></div>
+<div class="kc"><div class="k">YouTube Journalism</div><div class="d">Video journalism monetized through Google AdSense + sponsorships + memberships. High reach potential in Tamil and Hindi. Risk: algorithm and demonetization exposure.</div></div>
+<div class="kc"><div class="k">Grant Funding</div><div class="d">International Center for Journalists, Reporters Without Borders fund, IJNet. Good for specific investigative projects. Not sustainable as sole income.</div></div>
+<div class="kc"><div class="k">Events</div><div class="d">Journalism conferences and workshops. Revenue through tickets and sponsorships. Risk: sponsorship relationships must not influence coverage.</div></div>
+<div class="kc"><div class="k">Training / Consulting</div><div class="d">Monetize expertise through media literacy workshops or newsroom training. Ethical risk: never consult for organizations you cover.</div></div>
+</div>
+<h2>Career Strategy</h2>
+<h3>Build Your Portfolio Before Your Career Needs It</h3>
+<p>The first thing any editor asks is: what have you written? Start publishing now — on Medium, Substack, or any platform that gives you a URL. Every published piece is evidence of your ability.</p>
+<h3>Develop a Specialist Expertise</h3>
+<p>The journalist who covers everything competes with everyone. The journalist who covers Tamil Nadu's water crisis or AIADMK internal politics deeply competes with almost no one. Develop beat expertise that makes you the person editors call when that beat breaks.</p>
+<h3>Build a Public Presence</h3>
+<p>Your social media presence is your professional calling card. A Twitter/X account that consistently shares accurate, insightful journalism — your own and others' — is more valuable than a resume in many hiring contexts.</p>
+<div class="exb">
+<div class="eh"><span class="ei">🚀</span><div><div class="et">Exercise 19A — Launch Plan</div><div class="ety">Business Planning · 90 minutes · Advanced</div></div></div>
+<p>Design a launch plan for a small independent journalism operation focused on Tamil Nadu. Could be a newsletter, YouTube channel, or niche investigative site. Your plan must include:</p>
+<ol><li><strong>Editorial proposition:</strong> What coverage gap does this fill? Who is not being served by existing media?</li><li><strong>Target audience:</strong> Who specifically? How large? How will you reach them in year one?</li><li><strong>Revenue model:</strong> How will this generate enough revenue to pay at least one journalist a living wage within 2 years? Be specific about pricing and projected numbers.</li><li><strong>Editorial independence policy:</strong> 200-word editorial charter committing to specific independence safeguards</li><li><strong>First 90 days:</strong> List 10 specific story ideas that demonstrate your editorial proposition</li></ol>
+<div class="es"><textarea id="ex-19a" placeholder="Your journalism enterprise launch plan..."></textarea><button onclick="saveEx('19a')">Save</button></div>
+<div class="sn" id="sn-19a">Saved!</div>
+</div>`},
+
+20:{tag:'tag-res',tl:'Research',num:'Lesson 20',dur:'35 min',diff:'Advanced',
+title:'Communication Research Methods',
+sub:'Research design, qualitative and quantitative methods, key communication theories, dissertation strategy, and academic writing.',
+body:`
+<h2>Research as Extended Journalism</h2>
+<p>Academic communication research and journalism share the same fundamental obligation: honest, rigorous inquiry into how information moves through society. Understanding research methods makes you a better journalist — and conducting original research makes you a more credible voice in public discourse about media.</p>
+<h2>The Research Process: Seven Steps</h2>
+<ol>
+<li><strong>Research Problem Identification:</strong> What gap in knowledge exists? The best problems emerge from observation — something you noticed that doesn't match the existing explanation.</li>
+<li><strong>Literature Review:</strong> What has already been studied? A literature review is not a summary — it is an argument about the state of knowledge and where the gap lies.</li>
+<li><strong>Research Question and Hypothesis:</strong> Hypotheses (testable predictions) belong in quantitative research. Research questions (open-ended explorations) belong in qualitative research.</li>
+<li><strong>Methodology Selection:</strong> Choose based on your research question, not your comfort zone.</li>
+<li><strong>Data Collection:</strong> Execute with precision, ethical care, and documentation of every decision.</li>
+<li><strong>Analysis:</strong> Apply appropriate frameworks — coding/thematic analysis for qualitative; statistical tests for quantitative.</li>
+<li><strong>Interpretation and Presentation:</strong> What do results mean? What are limitations? What further research is needed?</li>
+</ol>
+<h2>Key Communication Theories</h2>
+<table>
+<tr><th>Theory</th><th>Core Claim</th><th>Dissertation Application</th></tr>
+<tr><td>Agenda Setting (McCombs & Shaw)</td><td>Media tells us not what to think, but what to think about</td><td>Content analysis + surveys comparing media agenda with public agenda</td></tr>
+<tr><td>Framing Theory (Entman)</td><td>How a story is "framed" shapes audience understanding</td><td>Content analysis comparing framing of same event across outlets</td></tr>
+<tr><td>Gatekeeping (Lewin / White)</td><td>Editors act as gates controlling which information becomes news</td><td>Interviews with editors; observation of editorial meetings</td></tr>
+<tr><td>Uses and Gratifications</td><td>Audiences actively choose media to satisfy specific needs</td><td>Survey of audiences on why they use specific news sources</td></tr>
+<tr><td>Cultivation Theory (Gerbner)</td><td>Heavy TV viewers see the world as more violent than it is</td><td>Survey comparing heavy vs. light TV viewers' perceptions of crime</td></tr>
+<tr><td>Spiral of Silence (Noelle-Neumann)</td><td>People suppress minority opinions when they believe they're in the minority</td><td>Survey on opinion expression in politically contentious media environments</td></tr>
+<tr><td>Diffusion of Innovations (Rogers)</td><td>New ideas spread through social systems via specific adopter categories</td><td>How a major investigative story spread across different media platforms</td></tr>
+</table>
+<div class="co co-tip"><div class="co-lbl">Choosing Your Dissertation Topic — The Four Tests</div><p><strong>Curiosity:</strong> Are you genuinely curious about this? You will live with this question for 12+ months.<br/><strong>Feasibility:</strong> Can you access the data, subjects, or documents you need?<br/><strong>Significance:</strong> Does answering this question matter to someone beyond your examination committee?<br/><strong>Originality:</strong> Has this specific question been answered? If the answer already exists, your contribution must extend it — not repeat it.</p></div>
+<div class="exb">
+<div class="eh"><span class="ei">🔬</span><div><div class="et">Exercise 20A — Full Research Proposal</div><div class="ety">Academic Planning · 2 Hours · Advanced</div></div></div>
+<p>Design a complete research proposal for a communication study related to Indian journalism. This is your dissertation blueprint. The proposal must include all ten components:</p>
+<ol>
+<li><strong>Title</strong> — specific, not generic: not "Media and Gender" but "Gender Representation in Tamil Language Television News 2020-2024: A Content Analysis"</li>
+<li><strong>Abstract</strong> — 200 words: problem, method, expected contribution</li>
+<li><strong>Research problem statement</strong> — 300 words: what gap exists? why does it matter?</li>
+<li><strong>Literature review outline</strong> — list 10 academic sources; write 50 words on each explaining its relevance</li>
+<li><strong>Research question(s)</strong> or hypotheses</li>
+<li><strong>Methodology</strong> — qualitative/quantitative/mixed; specific method; justification</li>
+<li><strong>Data collection instrument</strong> — coding sheet, interview guide (10 questions), or survey (15 questions)</li>
+<li><strong>Sample</strong> — who/what will you study? selection criteria? sample size? justification?</li>
+<li><strong>Ethical considerations</strong> — consent procedures, privacy protections, potential harms</li>
+<li><strong>Timeline</strong> — month-by-month research plan over 9 months</li>
+</ol>
+<div class="rubric"><div class="rubric-head">Research Proposal Rubric</div><table><tr><th>Component</th><th>Excellent</th><th>Adequate</th><th>Needs Revision</th></tr><tr><td>Research problem</td><td>Specific gap identified; significance clearly argued</td><td>Problem stated but gap not precisely located</td><td>Vague or unresearched</td></tr><tr><td>Literature review</td><td>Synthesizes existing work; identifies gap logically</td><td>Summarizes sources; gap implied but not argued</td><td>List of sources without synthesis</td></tr><tr><td>Methodology</td><td>Method chosen with explicit justification linked to RQ</td><td>Method identified; justification partial</td><td>Method stated without rationale</td></tr></table></div>
+<div class="es"><textarea id="ex-20a" placeholder="Your complete research proposal — all ten components..."></textarea><button onclick="saveEx('20a')">Save</button></div>
+<div class="sn" id="sn-20a">Saved!</div>
+</div>
+<div class="qb">
+<div class="qb-head"><h3>Research Methods — Final Quiz</h3></div>
+<div class="qq" id="q-20-1"><div class="qt">1. A researcher wants to understand WHY Tamil Nadu journalists leave the profession within 3 years. The MOST appropriate methodology is:</div><div class="opts">
+<div class="opt" onclick="so(this,'q-20-1','a')"><span class="ol">A</span>Large-scale survey of 5,000 journalists</div>
+<div class="opt" onclick="so(this,'q-20-1','b')"><span class="ol">B</span>Content analysis of Tamil newspapers over 10 years</div>
+<div class="opt" onclick="so(this,'q-20-1','c')"><span class="ol">C</span>In-depth qualitative interviews with 25-35 journalists who have left within 3 years</div>
+<div class="opt" onclick="so(this,'q-20-1','d')"><span class="ol">D</span>Secondary analysis of NCRB employment data</div>
+</div></div>
+<div class="qq" id="q-20-2"><div class="qt">2. The "Spiral of Silence" theory predicts that:</div><div class="opts">
+<div class="opt" onclick="so(this,'q-20-2','a')"><span class="ol">A</span>Heavy TV viewers overestimate crime rates in society</div>
+<div class="opt" onclick="so(this,'q-20-2','b')"><span class="ol">B</span>Media selects which issues get public attention through prominence and frequency</div>
+<div class="opt" onclick="so(this,'q-20-2','c')"><span class="ol">C</span>People with minority opinions suppress expressing them publicly, further inflating the perceived consensus</div>
+<div class="opt" onclick="so(this,'q-20-2','d')"><span class="ol">D</span>Audiences actively select media that confirms existing beliefs</div>
+</div></div>
+<button class="qs-btn" onclick="cq('quiz-20',{'q-20-1':'c','q-20-2':'c'})">Submit Final Quiz</button>
+<div class="qr" id="quiz-20-r"></div>
+</div>
+<div style="text-align:center;margin-top:44px;padding:44px;background:var(--cream);border-radius:2px;border-top:3px solid var(--green);">
+<div style="font-size:44px;margin-bottom:14px;">🎓</div>
+<div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:var(--ink);margin-bottom:10px;">Course Complete</div>
+<p style="color:var(--muted);font-size:15px;max-width:460px;margin:0 auto 6px;">You have completed all 20 lessons of the Journalism Academy Professional Certificate.</p>
+<p style="color:var(--muted);font-size:13px;max-width:460px;margin:0 auto;">Mark this lesson done and return to the overview to see your certificate.</p>
+</div>`}
+};
+
+Object.assign(L, L2);
+
+
+// ─── NAVIGATION ENGINE ────────────────────────────────────────────────────────
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-i').forEach(n=>n.classList.remove('active'));
+  document.getElementById('nav-'+id).classList.add('active');
+  cur=0; window.scrollTo(0,0);
+}
+
+function goL(n){
+  cur=n;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-lesson').classList.add('active');
+  document.querySelectorAll('.nav-i').forEach(x=>x.classList.remove('active'));
+  document.getElementById('nav-'+n).classList.add('active');
+  const lsn=L[n];
+  const mod=mmap[n];
+  document.getElementById('tb-loc').innerHTML=`Module ${mod} &nbsp;·&nbsp; <strong>${lsn.num}</strong> of ${TOTAL}`;
+  document.getElementById('btn-prev').disabled=(n===1);
+  document.getElementById('btn-next').textContent=n===TOTAL?'Finish ✓':'Next →';
+  const diffClass=lsn.diff==='Beginner'?'diff-beg':lsn.diff==='Intermediate'?'diff-int':'diff-adv';
+  document.getElementById('lcontent').innerHTML=`
+    <div class="l-meta">
+      <span class="l-tag ${lsn.tag}">${lsn.tl}</span>
+      <span class="l-num">${lsn.num}</span>
+      <span class="diff-badge ${diffClass}">${lsn.diff}</span>
+      <span class="l-dur">⏱ ${lsn.dur}</span>
+    </div>
+    <h1 class="l-title">${lsn.title}</h1>
+    <p class="l-sub">${lsn.sub}</p>
+    <div class="lb">${lsn.body}</div>
+    <div class="lf">
+      <div style="display:flex;gap:8px;">
+        <button class="btn"${n===1?' disabled':''} onclick="prevL()">← Previous</button>
+        <button class="btn pri" onclick="nextL()">${n===TOTAL?'Finish ✓':'Next Lesson →'}</button>
+      </div>
+      <button class="md-btn${done.has(n)?' done':''}" id="md-${n}" onclick="markDone(${n})">${done.has(n)?'✓ Completed':'Mark as Done'}</button>
+    </div>`;
+  window.scrollTo(0,0);
+}
+
+function prevL(){if(cur>1)goL(cur-1);}
+function nextL(){if(cur<TOTAL)goL(cur+1);else{goPage('home');showComp();}}
+
+function markDone(n){
+  done.add(n);
+  const ck=document.getElementById('chk-'+n);
+  if(ck) ck.classList.add('done');
+  updateProg();
+  const b=document.getElementById('md-'+n);
+  if(b){b.textContent='✓ Completed';b.classList.add('done');}
+  if(done.size===TOTAL) showComp();
+}
+
+function updateProg(){
+  const p=Math.round((done.size/TOTAL)*100);
+  document.getElementById('pbar').style.width=p+'%';
+  document.getElementById('pct-txt').textContent=p+'%';
+  document.getElementById('ptext').textContent=`${done.size} of ${TOTAL} lessons complete`;
+}
+
+function showComp(){
+  if(done.size===TOTAL){
+    const a=document.getElementById('comp-area');
+    if(a) a.innerHTML=`
+      <div style="background:var(--ink);color:#faf8f4;text-align:center;padding:56px 40px;">
+        <div style="font-size:52px;margin-bottom:16px;">🎓</div>
+        <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:900;margin-bottom:12px;">Certificate of Completion</div>
+        <p style="color:rgba(255,255,255,0.5);max-width:520px;margin:0 auto 8px;font-size:15px;">The Journalism Academy — Professional Certificate in Journalism & Mass Communication</p>
+        <p style="color:rgba(255,255,255,0.3);font-size:12px;margin-top:8px;">University of Madras · 20 Lessons · 10 Modules · 40+ Exercises</p>
+      </div>`;
+  }
+}
+
+function so(el,gid,val){
+  const g=document.getElementById(gid);
+  if(!g) return;
+  g.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  sels[gid]=val;
+}
+
+function cq(qid,answers){
+  const ltrs=['a','b','c','d'];
+  let cor=0, tot=Object.keys(answers).length;
+  Object.entries(answers).forEach(([gid,correct])=>{
+    const g=document.getElementById(gid);
+    if(!g) return;
+    const opts=g.querySelectorAll('.opt');
+    opts.forEach((o,i)=>{
+      o.classList.remove('sel','cor','wrg');
+      if(ltrs[i]===correct) o.classList.add('cor');
+    });
+    const chosen=sels[gid];
+    if(chosen===correct){ cor++; }
+    else if(chosen){
+      opts.forEach((o,i)=>{ if(ltrs[i]===chosen) o.classList.add('wrg'); });
+    }
+  });
+  const r=document.getElementById(qid+'-r');
+  if(!r) return;
+  r.classList.add('show');
+  if(cor===tot){
+    r.className='qr show pass';
+    r.textContent=`✓ ${cor}/${tot} correct — excellent work!`;
+  } else {
+    r.className='qr show fail';
+    r.textContent=`${cor}/${tot} correct. Review the highlighted correct answers above.`;
+  }
+}
+
+function saveEx(id){
+  const el=document.getElementById('ex-'+id);
+  if(el && el.value.trim()){
+    exdata[id]=el.value;
+    const n=document.getElementById('sn-'+id);
+    if(n){ n.style.display='block'; setTimeout(()=>n.style.display='none',2500); }
+    el.style.borderColor='rgba(26,107,58,0.4)';
+    setTimeout(()=>el.style.borderColor='',2000);
+  }
+}
+
+function toggleCk(li){ li.classList.toggle('ck'); }
+</script>
+</body>
+</html>
